@@ -64,8 +64,6 @@ uint8_t CAN3_0xxf7_Tx_Data[8];
 uint8_t CAN3_0xxf8_Tx_Data[8];
 
 uint8_t CAN_Supercap_Tx_Data[8];
-
-
 uint8_t CAN3_Chassis_Tx_Data_A[8];   //底盘给云台发送缓冲区
 uint8_t CAN3_Chassis_Tx_Data_B[8];   //底盘给云台发送缓冲区
 uint8_t CAN3_Chassis_Tx_Data_C[8];   //底盘给云台发送缓冲区
@@ -336,15 +334,17 @@ void TIM_CAN_PeriodElapsedCallback()
         //上板
         CAN_Send_Data(&hfdcan3, 0x88, CAN3_Chassis_Tx_Data_A, 8);
         CAN_Send_Data(&hfdcan3, 0x99, CAN3_Chassis_Tx_Data_B, 8);
-        CAN_Send_Data(&hfdcan3, 0x77, CAN3_Chassis_Tx_Data_C, 8);
+        CAN_Send_Data(&hfdcan3, 0x78, CAN3_Chassis_Tx_Data_C, 8);
         //超电
         CAN_Send_Data(&hfdcan3, 0x66, CAN_Supercap_Tx_Data, 8);
+        mod10 = 0;
     }
     #elif defined (GIMBAL)
 
     static uint8_t mod5 = 0,mod2 = 0;
     mod5++;
     mod2++;
+    
 //    CAN1_0x1fe_Tx_Data[2] = test >> 8;//B_pitch
 //    CAN1_0x1fe_Tx_Data[3] = test;
 //    CAN1_0x1fe_Tx_Data[0] = test >> 8;//B_Yaw
@@ -356,7 +356,7 @@ void TIM_CAN_PeriodElapsedCallback()
     if(mod5 == 5)
     {
         mod5 = 0;
-        // //B
+        //  B
         CAN_Send_Data(&hfdcan1, 0x1ff, CAN1_0x1ff_Tx_Data, 8); //摩擦轮 按照0x1ff ID 发送 可控制多个电机
         CAN_Send_Data(&hfdcan1, 0x1fe, CAN1_0x1fe_Tx_Data, 8); //GM6020  按照0x1fe ID 发送 可控制多个电机
         //  A

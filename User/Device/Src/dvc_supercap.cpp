@@ -124,6 +124,7 @@ void Class_Supercap::Output()
     #else
         Set_Working_Status(Working_Status_OFF);
     #endif
+    Set_Working_Status(Working_Status_OFF);
     memcpy(CAN_Tx_Data, &Supercap_Tx_Data, sizeof(Struct_Supercap_Tx_Data));
 }
 /**

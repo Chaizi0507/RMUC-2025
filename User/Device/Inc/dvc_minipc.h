@@ -258,7 +258,8 @@ typedef __packed struct // 0x0207 实时射击信息
 {
     uint16_t Booster_Heat_CD_A;
     uint16_t Booster_Heat_CD_B;
-    uint32_t reserved;
+    uint16_t Ammo_Number;
+    uint16_t reserved;
 } Referee_Rx_C_t;
 
 
@@ -272,11 +273,11 @@ public:
     inline int16_t Get_Chassis_Target_Velocity_X();
     inline int16_t Get_Chassis_Target_Velocity_Y();
     inline int16_t Get_Chassis_Target_Velocity_Omega();
-    inline float Get_Gimbal_Angular_Velocity_Yaw_Main();
-    inline float Get_Gimbal_Angular_Velocity_Yaw_A();
-    inline float Get_Gimbal_Angular_Velocity_Pitch_A();
-    inline float Get_Gimbal_Angular_Velocity_Yaw_B();
-    inline float Get_Gimbal_Angular_Velocity_Pitch_B();
+    inline int16_t Get_Gimbal_Angular_Velocity_Yaw_Main();
+    inline int16_t Get_Gimbal_Angular_Velocity_Yaw_A();
+    inline int16_t Get_Gimbal_Angular_Velocity_Pitch_A();
+    inline int16_t Get_Gimbal_Angular_Velocity_Yaw_B();
+    inline int16_t Get_Gimbal_Angular_Velocity_Pitch_B();
     inline float Get_Gimbal_Target_Y_A();
     inline float Get_Gimbal_Target_X_A();
     inline float Get_Gimbal_Target_Z_A();
@@ -298,6 +299,7 @@ public:
     inline float Get_Now_Roll_Angle_B();
     inline float Get_Now_Relative_Angle();
     inline float Get_Gimbal_Angle_Yaw();
+    inline float Get_Rx_Angle_Yaw_Main();
 
     inline uint8_t Get_Target_Invincible_State();
     inline Enum_MiniPC_Chassis_Control_Mode Get_Chassis_Control_Mode();
@@ -397,9 +399,10 @@ protected:
 	float Rx_Angle_Pitch_B;
 	float Rx_Angle_Yaw_B;
 
+    float Rx_Angle_Yaw_Main;
 
     const float g = 9.8; // 重力加速度
-    const float bullet_v = 28.0; // 子弹速度  
+    const float bullet_v = 24.0; // 子弹速度
 
     // 距离
     float Distance_A;
@@ -450,6 +453,10 @@ float Class_MiniPC::Get_Rx_Yaw_Angle_B()
     return (Rx_Angle_Yaw_B);
 }
 
+float Class_MiniPC::Get_Rx_Angle_Yaw_Main()
+{
+    return (Rx_Angle_Yaw_Main);
+}
 /**
  * @brief 获取迷你主机状态
  *
@@ -489,7 +496,7 @@ int16_t  Class_MiniPC::Get_Chassis_Target_Velocity_Omega()
 {
     return (Data_NUC_To_MCU.Chassis_Angular_Velocity_Yaw);
 }
-float Class_MiniPC::Get_Gimbal_Angular_Velocity_Yaw_Main()
+int16_t Class_MiniPC::Get_Gimbal_Angular_Velocity_Yaw_Main()
 {
     return (Data_NUC_To_MCU.Gimbal_Angular_Velocity_Yaw_Main);
 }

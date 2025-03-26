@@ -119,7 +119,7 @@ public:
     inline float Get_Default_Driver_Omega();
     inline float Get_Friction_Omega();
     inline float Get_Friction_Omega_Threshold();
-    inline uint16_t Get_Heat_CD();
+    inline uint16_t Get_Heat();
     
 
     inline Enum_Booster_Control_Type Get_Booster_Control_Type();
@@ -131,7 +131,7 @@ public:
     inline void Set_Friction_Omega(float __Friction_Omega);
     inline void Set_Driver_Omega(float __Driver_Omega);
     inline void Set_Booster_Type(Enum_Booster_Type __Booster_Type);
-    inline void Set_Heat_CD(uint16_t __Heat_CD);
+    inline void Set_Heat(uint16_t __Heat);
 
     void TIM_Calculate_PeriodElapsedCallback();
 	void Output();
@@ -150,7 +150,7 @@ protected:
     float Friction_Omega_Threshold = 600;
 
     //内部变量
-    uint16_t Heat_CD;
+    uint16_t Heat;
 
     //读变量
 
@@ -164,7 +164,7 @@ protected:
     Enum_Friction_Control_Type Friction_Control_Type = Friction_Control_Type_DISABLE;
     Enum_Booster_Type Booster_Type;
     //摩擦轮角速度
-    float Friction_Omega = 800.0f;
+    float Friction_Omega = 700.0f;
     //拨弹盘实际的目标速度, 一圈八发子弹
     float Driver_Omega = -2.0f * PI * 2;
     //拨弹轮目标绝对角度 加圈数
@@ -184,9 +184,9 @@ Enum_Booster_Type Class_Booster::Get_Booster_Type()
 {
     return (Booster_Type);
 }
-uint16_t Class_Booster::Get_Heat_CD()
+uint16_t Class_Booster::Get_Heat()
 {
-    return (Heat_CD);
+    return (Heat);
 }
 /**
  * @brief 获取拨弹盘默认速度, 一圈八发子弹, 此速度下与冷却均衡
@@ -217,9 +217,9 @@ float Class_Booster::Get_Friction_Omega_Threshold()
 {
     return (Friction_Omega_Threshold);
 }
-void Class_Booster::Set_Heat_CD(uint16_t __Heat_CD)
+void Class_Booster::Set_Heat(uint16_t __Heat)
 {
-    Heat_CD = __Heat_CD;
+    Heat = __Heat;
 }
 /**
  * @brief 设定发射机构状态

@@ -77,6 +77,7 @@ void Chassis_Device_CAN1_Callback(Struct_CAN_Rx_Buffer *CAN_RxMessage)
 {
     switch (CAN_RxMessage->Header.Identifier)
     {
+        #ifdef AGV
         case (0x201):
         {
             chariot.Chassis.Motor_Wheel[0].CAN_RxCpltCallback(CAN_RxMessage->Data);
@@ -97,6 +98,29 @@ void Chassis_Device_CAN1_Callback(Struct_CAN_Rx_Buffer *CAN_RxMessage)
             chariot.Chassis.Motor_Wheel[3].CAN_RxCpltCallback(CAN_RxMessage->Data);
         }
         break;
+        #endif
+        #ifdef OMNI_WHEEL
+            case (0x201):
+            {
+                chariot.Chassis.Motor_Wheel[1].CAN_RxCpltCallback(CAN_RxMessage->Data);
+            }
+            break;
+            case (0x202):
+            {
+                chariot.Chassis.Motor_Wheel[3].CAN_RxCpltCallback(CAN_RxMessage->Data);
+            }
+            break;
+            case (0x203):
+            {
+                chariot.Chassis.Motor_Wheel[0].CAN_RxCpltCallback(CAN_RxMessage->Data);
+            }
+            break;
+            case (0x204):
+            {
+                chariot.Chassis.Motor_Wheel[2].CAN_RxCpltCallback(CAN_RxMessage->Data);
+            }
+            break;
+        #endif
         case (0x150):  
         {
             
@@ -122,11 +146,7 @@ void Chassis_Device_CAN2_Callback(Struct_CAN_Rx_Buffer *CAN_RxMessage)
 {
     switch (CAN_RxMessage->Header.Identifier)
     {
-        case (0x67):  //留给超级电容
-        {
-            chariot.Chassis.Supercap.CAN_RxCpltCallback(CAN_RxMessage->Data);
-        }
-        break;
+
         case (0x208):
         {
             chariot.Chassis.Motor_Steer[1].CAN_RxCpltCallback(CAN_RxMessage->Data);
@@ -157,7 +177,7 @@ void Chassis_Device_CAN3_Callback(Struct_CAN_Rx_Buffer *CAN_RxMessage){
     switch (CAN_RxMessage->Header.Identifier)
     {
 
-        case (0x77):  //留给上板通讯
+        case (0x77)://留给上板通讯
         {
             chariot.CAN_Chassis_Rx_Gimbal_Callback(CAN_RxMessage->Data);
             break;
@@ -167,6 +187,11 @@ void Chassis_Device_CAN3_Callback(Struct_CAN_Rx_Buffer *CAN_RxMessage){
             chariot.Chassis.Supercap.CAN_RxCpltCallback(CAN_RxMessage->Data);
             break;
         }
+        case (0x55):
+        {
+            chariot.Chassis.Supercap.CAN_RxCpltCallback(CAN_RxMessage->Data);
+        }
+        break;
     }
 }
 #endif
@@ -262,6 +287,15 @@ void Gimbal_Device_CAN3_Callback(Struct_CAN_Rx_Buffer *CAN_RxMessage){
             chariot.Booster_B.Motor_Driver.CAN_RxCpltCallback(CAN_RxMessage->Data);
         }
         break;
+        case (0x78):
+        {
+            chariot.CAN_Gimbal_Rx_Chassis_Callback();
+        }
+        break;
+        case (0x99):
+        {
+            chariot.CAN_Gimbal_Rx_Chassis_Callback();
+        }
 	}
 }
 #endif
@@ -543,7 +577,8 @@ extern "C" void Task_Init()
         
         //遥控器接收
         UART_Init(&huart5, DR16_UART5_Callback, 18);
-		    UART_Init(&huart7, IMUA_UART7_Callback, 56);
+        //陀螺仪
+		UART_Init(&huart7, IMUA_UART7_Callback, 56);
         UART_Init(&huart1, IMUB_USART1_Callback, 56);
 
         //上位机USB

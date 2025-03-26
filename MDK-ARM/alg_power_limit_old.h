@@ -1,16 +1,16 @@
 /**
  * @file alg_power_limit.h
  * @author lez 
- * @brief 功率限制算法
+ * @brief ??????
  * @version 1.1
- * @date 2024-07-1 0.1 24赛季定稿
+ * @date 2024-07-1 0.1 24????
  *
  * @copyright ZLLC 2024
  *
  */
 
-#ifndef ALG_POWER_LIMIT_H
-#define ALG_POWER_LIMIT_H
+#ifndef ALG_POWER_LIMIT_OLD_H
+#define ALG_POWER_LIMIT_OLD_H
 
 /* Includes ------------------------------------------------------------------*/
 
@@ -22,8 +22,8 @@
 /* Exported macros -----------------------------------------------------------*/
 
 #define RAD_TO_RPM              9.5493f
-#define CMD_CURRENT_TO_TORQUE   ((20.f/16384.f)*0.3f)   //计算出3508直驱输出轴转子和cmd电流的关系
-#define REDUATION               (3591.f/187.f)         //减速比
+#define CMD_CURRENT_TO_TORQUE   ((20.f/16384.f)*0.3f)   //???3508????????cmd?????
+#define REDUATION               (3591.f/187.f)         //???
  
 class Class_DJI_Motor_C620;
 
@@ -40,7 +40,7 @@ class Class_Power_Limit
     float Get_Torque_Current(uint8_t num);
 
     void Set_Motor(Class_DJI_Motor_C620 (&Motor)[4]);
-    //输出功率限制之后的电流到电机缓冲区
+    //?????????????????
     void Output(Class_DJI_Motor_C620 (&Motor)[4]);
     float Calculate_Limit_K(float omega[],float torque[],float power_limit,uint8_t motor_nums);
 
@@ -56,52 +56,52 @@ class Class_Power_Limit
     const float Min_Buffer = 30.0f; 
     const float Protected_Buffer = 30.0f;
 
-    //转矩系数 rad转rpm系数
+    //???? rad?rpm??
 	float Toque_Coefficient = 1.99688994e-6f * (3591/187) / 13.93f;  // (20/16384)*(0.3)*(187/3591)/9.55
 
     float current_to_torqure = (20.f/16384.f)*(0.3f);
     float rpm_to_omega = (PI/30.f)/13.92f;
 
-    //电机模型参数
+    //??????
 	float k1 = 1.3;		// k1 
 	float k2 = 0.015;		// k2 
 	float Alpha = 0.0f;
-    float Tansfer_Coefficient = 9.55f;  //转化系数 w*t/Tansfer_Coefficient
+    float Tansfer_Coefficient = 9.55f;  //???? w*t/Tansfer_Coefficient
 
-    //超电电量
+    //????
     float Supercap_Energy;
-    //超电电压
+    //????
     float Supercap_Voltage;
-    //超电冲刺标志
+    //??????
     uint8_t Supercap_Print_Flag = 0;
 
-    //过程变量
+    //????
     float equation_a;
     float equation_b;
     float equation_c;
 
-    //四电机输入目标力矩
+    //?????????
     float Input_Torque[4];  
-    //四电机输出目标力矩
+    //?????????
     float Output_Torque[4];  
-    //四电机当前力矩
+    //???????
     float Torque_Now[4];  
-    //四电机当前输出轴角速度 rad/s
+    //??????????? rad/s
     float Omega[4];	 
-    //底盘总功率限制
-    float Total_Power_Limit = 80.f;//哨兵初始化
-    //底盘总预测功率
+    //???????
+    float Total_Power_Limit;  
+    //???????
     float Total_Predict_Power = 0;  
-    //预测功率
+    //????
     float Predict_Power[4]; 
-    //功率伸缩系数
+    //??????
 	float Power_Scale;  
-    //伸缩之后的功率限制
+    //?????????
 	float Scaled_Give_Power[4];  
 };
 
 /**
- * @brief 设定总功率限制
+ * @brief ???????
  *
  */
 void Class_Power_Limit::Set_Power_Limit(float __total_power_limit)
@@ -110,7 +110,7 @@ void Class_Power_Limit::Set_Power_Limit(float __total_power_limit)
 }
 
 /**
- * @brief 设定底盘当前剩余缓冲能量
+ * @brief ????????????
  *
  */
 void Class_Power_Limit::Set_Chassis_Buffer(float __buffer)
@@ -119,7 +119,7 @@ void Class_Power_Limit::Set_Chassis_Buffer(float __buffer)
 }
 
 /**
- * @brief 设定超级电容当前剩余能量
+ * @brief ????????????
  *
  */
 void Class_Power_Limit::Set_Supercap_Enegry(float __energy)
@@ -128,7 +128,7 @@ void Class_Power_Limit::Set_Supercap_Enegry(float __energy)
 }
 
 /**
- * @brief 设定超级电容当前电压
+ * @brief ??????????
  *
  */
 void Class_Power_Limit::Set_Supercap_Voltage(float __voltage)
@@ -137,7 +137,7 @@ void Class_Power_Limit::Set_Supercap_Voltage(float __voltage)
 }
 
 /**
- * @brief 设定超级电容冲刺标志
+ * @brief ??????????
  *
  */
 void Class_Power_Limit::Set_Supercap_Print_Flag(uint8_t __flag)

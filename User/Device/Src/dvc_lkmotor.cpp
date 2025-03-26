@@ -317,7 +317,7 @@ void Class_LK_Motor::TIM_Alive_PeriodElapsedCallback()
 
     Pre_Flag = Flag;
 }
-float test_omaga = 1,test_angle = 20;
+float test_omaga = 1,test_angle = 0;
 /**
  * @brief TIM定时器中断发送出去的回调函数
  *

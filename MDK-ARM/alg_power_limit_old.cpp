@@ -1,9 +1,9 @@
 /**
  * @file alg_power_limit.cpp
  * @author lez
- * @brief 功率限制算法
+ * @brief ??????
  * @version 1.1
- * @date 2024-07-1 0.1 24赛季定稿
+ * @date 2024-07-1 0.1 24????
  *
  * @copyright ZLLC 2024
  *
@@ -11,7 +11,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 
-#include "alg_power_limit.h"
+#include "alg_power_limit_old.h"
 #include "dvc_djimotor.h"
 #include "drv_math.h"
 /* Private macros ------------------------------------------------------------*/
@@ -24,10 +24,10 @@
 
 #define POWER_LIMIT_NEW_CONTROL
 /**
- * @brief ��ȡ���Ť�ص���
+ * @brief ??????T?????
  *
- * @param num ������
- * @return float ���Ť�ص���
+ * @param num ??????
+ * @return float ???T?????
  */
 float Class_Power_Limit::Get_Torque_Current(uint8_t num)
 {
@@ -36,7 +36,7 @@ float Class_Power_Limit::Get_Torque_Current(uint8_t num)
 
 float Class_Power_Limit::Calculate_Limit_K(float omega[], float torque[], float power_limit, uint8_t motor_nums)
 {
-    float limit_k = 1.; // 输出伸缩因子k
+    float limit_k = 1.; // ??????k
 
     float tmp_predict;
 
@@ -70,7 +70,7 @@ float Class_Power_Limit::Calculate_Limit_K(float omega[], float torque[], float 
 
         if (delta >= 0)
         {
-            limit_k = (-func_b + sqrtf(delta)) / (2 * func_a); // 求根公式
+            limit_k = (-func_b + sqrtf(delta)) / (2 * func_a); // ????
         }
         else
         {
@@ -83,7 +83,7 @@ float Class_Power_Limit::Calculate_Limit_K(float omega[], float torque[], float 
 
 
 /**
- * @brief ��ʱ�����ڵ���ص�����
+ * @brief ??????????????????
  *
  */
 float test_scale;
@@ -104,20 +104,20 @@ void Class_Power_Limit::TIM_Adjust_PeriodElapsedCallback(Class_DJI_Motor_C620 (&
 	}
 	// else use motor model to predict and limit the power
 	#elif defined (POWER_LIMIT_NEW_CONTROL)
-		//计算缓冲能量
-		Buffer_power = (Chassis_Buffer-Min_Buffer) * Buffer_K;
+		//??????
+		Buffer_power = (Chassis_Buffer-Min_Buffer)*Buffer_K;
 		Math_Constrain(&Buffer_power,-Buffer_power_limit,Buffer_power_limit);
-		//收集电机参数
+		//??????
 		Set_Motor(Motor);
-        //跑功率限制
+        //?????
 		float power_limit_sum = fabs(Total_Power_Limit + Buffer_power);
         Limit_K = Calculate_Limit_K(Omega,Input_Torque,power_limit_sum,4);
-        // 设置输出
+        // ????
 		Output(Motor);	
 
 	#elif defined (POWER_LIMIT_OLD_CONTROL)
 	float Power_Limit;
-	//max_power=50;//裁判系统读取不到数据时自己赋值,比赛使用时要注释掉
+	//max_power=50;//???????????????,?????????
 	float Power_out_1=abs((Omega[0])*(CMD_CURRENT_TO_TORQUE*Input_Torque_Current[0]));
 	float Power_out_2=abs((Omega[1])*(CMD_CURRENT_TO_TORQUE*Input_Torque_Current[1]));
 	float Power_out_3=abs((Omega[2])*(CMD_CURRENT_TO_TORQUE*Input_Torque_Current[2]));
@@ -139,8 +139,8 @@ void Class_Power_Limit::TIM_Adjust_PeriodElapsedCallback(Class_DJI_Motor_C620 (&
 								   (Omega[3])*(Omega[3]));
 	Power_in=Power_in_1+Power_in_2+Power_in_3+Power_in_4;
 	
-	//根据电量选择使用电容组
-	//根据电容组电压线性改变限制功率
+	//???????????
+	//???????????????
 	if(Supercap_Voltage >= 13.0f)
 	{
 		if(Supercap_Print_Flag == 0)
@@ -155,7 +155,7 @@ void Class_Power_Limit::TIM_Adjust_PeriodElapsedCallback(Class_DJI_Motor_C620 (&
 	else
 		Power_Limit = Total_Power_Limit * 1.2f;
 
-	//功率限制
+	//????
 	if(Power_in>Power_Limit)  
 	{
 		if((Power_out*Power_out-4.0f*k1*(Target_current_square_sum)*(k2*(Actual_speed_square_sum)-Power_Limit+Alpha))>=0)
@@ -178,7 +178,7 @@ void Class_Power_Limit::TIM_Adjust_PeriodElapsedCallback(Class_DJI_Motor_C620 (&
 	Output_Torque_Current[3]=Input_Torque_Current[3]*Power_Scale;
 	Output(Motor);
 	
-//使用的电流值改为实际电流值，用于调节POWER_K1和POWER_K2，重新计算Power_in_actual
+//?????????????,????POWER_K1?POWER_K2,????Power_in_actual
 //	Power_out_1_actual=abs_f(((chassis_motor1.actual_speed/reduction_ratio)*2.0f*3.1415927f/60.0f)*(K_M*chassis_motor1.actual_current*20.0f/16384.0f));
 //	Power_out_2_actual=abs_f(((chassis_motor2.actual_speed/reduction_ratio)*2.0f*3.1415927f/60.0f)*(K_M*chassis_motor2.actual_current*20.0f/16384.0f));
 //	Power_out_3_actual=abs_f(((chassis_motor3.actual_speed/reduction_ratio)*2.0f*3.1415927f/60.0f)*(K_M*chassis_motor3.actual_current*20.0f/16384.0f));
@@ -193,7 +193,7 @@ void Class_Power_Limit::TIM_Adjust_PeriodElapsedCallback(Class_DJI_Motor_C620 (&
 }
 
 /**
- * @brief �趨����������
+ * @brief ????????????
  *
  */
 void Class_Power_Limit::Output(Class_DJI_Motor_C620 (&Motor)[4])
@@ -207,7 +207,7 @@ void Class_Power_Limit::Output(Class_DJI_Motor_C620 (&Motor)[4])
 }
 
 /**
- * @brief �趨�ĸ�����Ŀ��Ƶ����͵�ǰ���ٶ�
+ * @brief ???????????????????j?????
  *
  */
 void Class_Power_Limit::Set_Motor(Class_DJI_Motor_C620 (&Motor)[4])

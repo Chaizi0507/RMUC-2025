@@ -158,12 +158,22 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>\\Sentry\../User/Task/Src/tsk_config_and_callback.cpp\chariot,0x0A</ItemText>
+          <ItemText>chariot,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>CAN3_Chassis_Tx_Data_A</ItemText>
+          <ItemText>CAN3_Chassis_Rx_Data_A,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>CAN3_Chassis_Rx_Data_C,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>CAN3_Chassis_Tx_Data_C</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
