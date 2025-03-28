@@ -291,13 +291,13 @@ void Class_Booster::Output()
             if(Heat < 350){
                 Motor_Driver.Set_Target_Omega_Radian(Driver_Omega);
             }
-            else if(Heat < 380 || Heat > 350)
+            else if(Heat < 370 && Heat > 350)
             {
                 float tmp_omega;       
-                tmp_omega = (380.f - Heat) / (400.f - 350.f) * Default_Driver_Omega;
+                tmp_omega = (370.f - Heat) / (400.f - 350.f) * Default_Driver_Omega;
                 Motor_Driver.Set_Target_Omega_Radian(tmp_omega);
             }
-            else if(Heat > 380)
+            else if(Heat > 370)
             {
                 Motor_Driver.Set_Target_Omega_Radian(0.0f);
             }

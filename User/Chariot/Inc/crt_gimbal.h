@@ -274,11 +274,10 @@ public:
     void Yaw_Angle_Limit(Enum_Motor_Yaw_Type Motor_Yaw_Type);
     void MiniPC_Update();
     void PID_Update();
+    void Limit_Update();
 
     IMU_Data IMU_Data_A;
     IMU_Data IMU_Data_B;
-
-    
 
 protected:
     //初始化相关常量

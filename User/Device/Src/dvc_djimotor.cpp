@@ -414,6 +414,7 @@ void Class_DJI_Motor_GM6020::TIM_PID_PeriodElapsedCallback()
         Target_Omega_Angle = PID_Angle.Get_Out();
 
         PID_Omega.Set_Target(Target_Omega_Angle);
+        //PID_Omega.Set_Target(ome);
         PID_Omega.Set_Now(Transform_Omega);
         PID_Omega.TIM_Adjust_PeriodElapsedCallback();
 

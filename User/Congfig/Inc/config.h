@@ -15,10 +15,15 @@
 /* Includes ------------------------------------------------------------------*/
 
 /* Exported macros -----------------------------------------------------------*/
-//#define CHASSIS
-#define GIMBAL
 
-#define STEERING_WHEEL
+//底盘或云台状态
+#define CHASSIS
+//#define GIMBAL
+
+//调试或比赛状态
+#define DEBUG
+
+//功率控制相关
 #define POWER_CONTROL 1 //启用功率控制
 //#define BIG_P_ALLOCATE
 //#define BUFFER_LOOP
@@ -27,9 +32,8 @@
 //#define AGV           //舵轮底盘
 #define OMNI_WHEEL //全向轮底盘
 //#define INFANTRY    //步兵
-//#define HERO
+//#define HERO  
 #define SENTRY //哨兵
-
 
 /*轮组数据*/
 #ifdef INFANTRY

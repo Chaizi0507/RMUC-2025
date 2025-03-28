@@ -165,7 +165,10 @@ void Class_Chariot::CAN_Chassis_Tx_Gimbal_Callback()
     CAN3_Chassis_Tx_Data_A[5] = Self_Outpost_HP >> 8;
     CAN3_Chassis_Tx_Data_A[6] = Self_Outpost_HP;
     CAN3_Chassis_Tx_Data_A[7] = color << 7 | Flag[5] << 5 | Flag[4] << 4 | Flag[3] << 3 | Flag[2] << 2 | Flag[1] << 1 | Flag[0] << 0;
-
+    if(Referee.Get_Central_Data()!= 0)
+    {
+        CAN3_Chassis_Tx_Data_A[0] = 4;
+    }
     //B包
     memcpy(CAN3_Chassis_Tx_Data_B + 0, &Self_Base_HP, sizeof(uint16_t));
     memcpy(CAN3_Chassis_Tx_Data_B + 2, &Oppo_Outpost_HP, sizeof(uint16_t));
@@ -313,8 +316,6 @@ void Class_Chariot::CAN_Gimbal_Tx_Chassis_Callback()
 
 }
 #endif
-
-float jjj = 0;
 /**
  * @brief 底盘控制逻辑
  *
@@ -445,7 +446,7 @@ void Class_Chariot::Control_Chassis()
             break;
         }
         case(Chassis_Control_Type_SPIN):{
-            chassis_omega = 0.75f;//符合映射规则
+            chassis_omega = 0.75f;
             chassis_velocity_x = Chassis.Get_Target_Velocity_X() * cos(relative_angle) - Chassis.Get_Target_Velocity_Y() * sin(relative_angle);
             chassis_velocity_y = Chassis.Get_Target_Velocity_X() * sin(relative_angle) + Chassis.Get_Target_Velocity_Y() * cos(relative_angle);
             if(DR16.Get_Right_Switch() == DR16_Switch_Status_DOWN && DR16.Get_Left_Switch() == DR16_Switch_Status_UP)chassis_omega = -0.75f;
@@ -769,6 +770,15 @@ void Class_Chariot::TIM1msMod50_Alive_PeriodElapsedCallback()
                 DR16.TIM1msMod50_Alive_PeriodElapsedCallback();	   
                 mod50_mod3 = 0;         
             }
+            #ifdef DEBUG
+                if (DR16.Get_DR16_Status() == DR16_Status_DISABLE)
+                {
+                    Gimbal.Set_Gimbal_Control_Type(Gimbal_Control_Type_DISABLE);
+                    Booster_A.Set_Booster_Control_Type(Booster_Control_Type_DISABLE);
+                    Booster_B.Set_Booster_Control_Type(Booster_Control_Type_DISABLE);
+                    Chassis.Set_Chassis_Control_Type(Chassis_Control_Type_DISABLE);
+                }
+            #else
             if(CAN3_Chassis_Rx_Data_A.game_process != 4)
             {
                 if (DR16.Get_DR16_Status() == DR16_Status_DISABLE)
@@ -779,6 +789,7 @@ void Class_Chariot::TIM1msMod50_Alive_PeriodElapsedCallback()
                     Chassis.Set_Chassis_Control_Type(Chassis_Control_Type_DISABLE);
                 }
             }
+            #endif
                 
             Gimbal.Motor_Pitch_A.TIM_Alive_PeriodElapsedCallback();
             Gimbal.Motor_Pitch_B.TIM_Alive_PeriodElapsedCallback();

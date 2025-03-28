@@ -1198,6 +1198,7 @@ public:
     inline Enum_Referee_Data_Robots_ID Get_Radar_Send_Robot_ID();
     inline float Get_Radar_Send_Coordinate_X();
     inline float Get_Radar_Send_Coordinate_Y();
+    inline uint32_t Get_Central_Data();
 
     #ifdef GIMBAL
     inline void Set_Robot_ID(Enum_Referee_Data_Robots_ID __Robot_ID);
@@ -1923,7 +1924,10 @@ uint8_t Class_Referee::Get_Booster_Cooling_Buff_Rate()
 {
     return (Robot_Buff.Booster_Cooling_Buff_Rate);
 }
-
+uint32_t Class_Referee::Get_Central_Data()
+{
+    return (Event_Data.Centre_Enable_Status);
+}
 /**
  * @brief 获取防御加成buff状态
  *

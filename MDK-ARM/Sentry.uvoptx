@@ -173,7 +173,7 @@
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>CAN3_Chassis_Tx_Data_C</ItemText>
+          <ItemText>CAN3_Chassis_Rx_Data_B,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

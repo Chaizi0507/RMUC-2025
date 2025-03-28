@@ -494,7 +494,7 @@ void Task100us_TIM4_Callback()
  * @brief TIM5任务回调函数
  *
  */
-float test_omega_angle=0;
+extern Referee_Rx_A_t CAN3_Chassis_Rx_Data_A;
 void Task1ms_TIM5_Callback()
 {
     init_finished++;
@@ -509,7 +509,14 @@ void Task1ms_TIM5_Callback()
     if(start_flag==1)
     {
         #ifdef GIMBAL
-        chariot.FSM_Alive_Control.Reload_TIM_Status_PeriodElapsedCallback();
+            #ifdef DEBUG
+            chariot.FSM_Alive_Control.Reload_TIM_Status_PeriodElapsedCallback();
+            #else
+            if(CAN3_Chassis_Rx_Data_A.game_process != 4)
+            {
+                chariot.FSM_Alive_Control.Reload_TIM_Status_PeriodElapsedCallback();
+            }
+            #endif
         #endif
 
         chariot.TIM_Calculate_PeriodElapsedCallback();
