@@ -535,7 +535,7 @@ void Task1ms_TIM5_Callback()
         if (mod5 == 5)
         {
             TIM_USB_PeriodElapsedCallback(&MiniPC_USB_Manage_Object);
-        mod5 = 0;
+            mod5 = 0;
         }	        
     }
 }

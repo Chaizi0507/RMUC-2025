@@ -361,9 +361,10 @@ void Class_Chariot::Control_Chassis()
             
             if (MiniPC.Get_MiniPC_Status() == MiniPC_Status_DISABLE)
             {
-                Chassis.Set_Chassis_Control_Type(Chassis_Control_Type_FLLOW);
+                Chassis.Set_Chassis_Control_Type(Chassis_Control_Type_SPIN);
                 Chassis.Set_Target_Velocity_X(0);
                 Chassis.Set_Target_Velocity_Y(0);
+                Chassis.Set_Target_Omega(0.75f);
                 break;
             }
 
@@ -652,10 +653,19 @@ void Class_Chariot::Control_Booster()
             }
             else if(DR16.Get_Right_Switch() == DR16_Switch_Status_DOWN)
             {
-                if(MiniPC.Get_Auto_aim_Status_A() == Auto_aim_Status_ENABLE)Booster_A.Set_Booster_Control_Type(Booster_Control_Type_REPEATED);
-                else if (MiniPC.Get_Auto_aim_Status_A() == Auto_aim_Status_DISABLE)Booster_A.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
-                if(MiniPC.Get_Auto_aim_Status_B() == Auto_aim_Status_ENABLE)Booster_B.Set_Booster_Control_Type(Booster_Control_Type_REPEATED);
-                else if (MiniPC.Get_Auto_aim_Status_B() == Auto_aim_Status_DISABLE)Booster_B.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
+                if(MiniPC.Get_Auto_aim_Status_A() == Auto_aim_Status_ENABLE &&
+                  (MiniPC.Get_Rx_Yaw_Angle_A() != 0.f || MiniPC.Get_Rx_Pitch_Angle_A() != 0.f))
+                    Booster_A.Set_Booster_Control_Type(Booster_Control_Type_REPEATED);
+                    
+                else if (MiniPC.Get_Auto_aim_Status_A() == Auto_aim_Status_DISABLE)
+                    Booster_A.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
+
+                if(MiniPC.Get_Auto_aim_Status_B() == Auto_aim_Status_ENABLE && 
+                  (MiniPC.Get_Rx_Yaw_Angle_B() != 0.f || MiniPC.Get_Rx_Pitch_Angle_B() != 0.f))
+                    Booster_B.Set_Booster_Control_Type(Booster_Control_Type_REPEATED);
+
+                else if (MiniPC.Get_Auto_aim_Status_B() == Auto_aim_Status_DISABLE)
+                    Booster_B.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
             }
             break;
         }
