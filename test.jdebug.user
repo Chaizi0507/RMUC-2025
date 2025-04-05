@@ -1,31 +1,34 @@
 
-GraphedExpression="((((chariot).Gimbal).Boardc_BMI).INS).Yaw", Color=#a00909
-GraphedExpression="(((chariot).Gimbal).Motor_Main_Yaw).Transform_Angle", Color=#09a01b
-OpenDocument="QuaternionEKF.cpp", FilePath="d:/Embedded system/Project/RM/M57_New/User/Algorithm/Src/QuaternionEKF.cpp", Line=192
-OpenDocument="tsk_config_and_callback.cpp", FilePath="d:/Embedded system/Project/RM/M57_New/User/Task/Src/tsk_config_and_callback.cpp", Line=375
-OpenDocument="main.c", FilePath="d:/Embedded system/Project/RM/M57_New/Core/Src/main.c", Line=64
-OpenDocument="dvc_djimotor.cpp", FilePath="d:/Embedded system/Project/RM/M57_New/User/Device/Src/dvc_djimotor.cpp", Line=356
-OpenDocument="stm32h7xx_hal_uart.c", FilePath="d:/Embedded system/Project/RM/M57_New/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c", Line=1181
-OpenDocument="startup_stm32h723xx.s", FilePath="d:/Embedded system/Project/RM/M57_New/MDK-ARM/startup_stm32h723xx.s", Line=245
-OpenDocument="stm32h7xx_hal_spi.c", FilePath="d:/Embedded system/Project/RM/M57_New/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c", Line=1339
-OpenDocument="crt_booster.cpp", FilePath="d:/Embedded system/Project/RM/M57_New/User/Chariot/Src/crt_booster.cpp", Line=279
-OpenDocument="arm_mat_mult_f32.c", FilePath="D:/Embedded system/Tool/keil5/ARM/CMSIS-DSP/1.14.2/Source/MatrixFunctions/arm_mat_mult_f32.c", Line=957
-OpenDocument="alg_pid.h", FilePath="d:/Embedded system/Project/RM/M57_New/User/Algorithm/Inc/alg_pid.h", Line=79
-OpenDocument="stm32h7xx_hal_fdcan.c", FilePath="d:/Embedded system/Project/RM/M57_New/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_fdcan.c", Line=2740
-OpenDocument="crt_gimbal.cpp", FilePath="d:/Embedded system/Project/RM/M57_New/User/Chariot/Src/crt_gimbal.cpp", Line=64
-OpenDocument="stm32h7xx_it.c", FilePath="d:/Embedded system/Project/RM/M57_New/Core/Src/stm32h7xx_it.c", Line=96
+GraphedExpression="((((chariot).Booster_A).Motor_Driver).PID_Omega).Pre_Now", Color=#a00909
+GraphedExpression="((((chariot).Booster_A).Motor_Driver).PID_Omega).Pre_Target", Color=#5500ff
+GraphedExpression="((((chariot).Booster_B).Motor_Driver).PID_Omega).Pre_Now", Color=#09a087
+GraphedExpression="((((chariot).Booster_B).Motor_Driver).PID_Omega).Pre_Target", Color=#0984a0
+OpenDocument="arm_mat_mult_f32.c", FilePath="D:/Embedded system/Tool/keil5/ARM/CMSIS-DSP/1.14.2/Source/MatrixFunctions/arm_mat_mult_f32.c", Line=922
+OpenDocument="QuaternionEKF.cpp", FilePath="D:/Embedded system/Project/RM/M57_New/User/Algorithm/Src/QuaternionEKF.cpp", Line=335
+OpenDocument="stm32h7xx_hal_spi.c", FilePath="D:/Embedded system/Project/RM/M57_New/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c", Line=1350
+OpenDocument="tsk_config_and_callback.cpp", FilePath="D:/Embedded system/Project/RM/M57_New/User/Task/Src/tsk_config_and_callback.cpp", Line=375
+OpenDocument="main.c", FilePath="D:/Embedded system/Project/RM/M57_New/Core/Src/main.c", Line=67
+OpenDocument="dvc_djimotor.cpp", FilePath="D:/Embedded system/Project/RM/M57_New/User/Device/Src/dvc_djimotor.cpp", Line=497
+OpenDocument="stm32h7xx_it.c", FilePath="D:/Embedded system/Project/RM/M57_New/Core/Src/stm32h7xx_it.c", Line=101
+OpenDocument="startup_stm32h723xx.s", FilePath="D:/Embedded system/Project/RM/M57_New/MDK-ARM/startup_stm32h723xx.s", Line=245
+OpenDocument="stm32h7xx_hal_uart.c", FilePath="D:/Embedded system/Project/RM/M57_New/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c", Line=3422
+OpenDocument="crt_booster.cpp", FilePath="D:/Embedded system/Project/RM/M57_New/User/Chariot/Src/crt_booster.cpp", Line=279
+OpenDocument="kalman_filter.cpp", FilePath="D:/Embedded system/Project/RM/M57_New/User/Algorithm/Src/kalman_filter.cpp", Line=416
+OpenDocument="alg_pid.h", FilePath="D:/Embedded system/Project/RM/M57_New/User/Algorithm/Inc/alg_pid.h", Line=79
+OpenDocument="stm32h7xx_hal_fdcan.c", FilePath="D:/Embedded system/Project/RM/M57_New/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_fdcan.c", Line=2740
+OpenDocument="crt_gimbal.cpp", FilePath="D:/Embedded system/Project/RM/M57_New/User/Chariot/Src/crt_gimbal.cpp", Line=64
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=444, h=834, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=1077, h=408, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=RIGHT, x=0, y=1, w=1077, h=425, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Data Sampling", DockArea=BOTTOM, x=0, y=0, w=736, h=742, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=BOTTOM, x=1, y=0, w=2143, h=742, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="152;328", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="1845;-91", CodeGraphLegendShown=0, CodeGraphLegendPosition="1868;0"
-TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[339;116;100;116;1224]
-TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" ((((chariot).Gimbal).Boardc_BMI).INS).Yaw";" (((chariot).Gimbal).Motor_Main_Yaw).Transform_Angle"], ColWidths=[100;100;100;100]
-TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[641;100;105;100;100;127;149;171;171]
-TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=444, h=610, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=1077, h=586, TabPos=1, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=RIGHT, x=0, y=0, w=1077, h=586, TabPos=0, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=BOTTOM, x=0, y=0, w=838, h=966, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=BOTTOM, x=1, y=0, w=2041, h=966, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="152;552", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="1743;-91", CodeGraphLegendShown=0, CodeGraphLegendPosition="1766;0"
 TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[545;433;112;101]
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" ((((chariot).Booster_A).Motor_Driver).PID_Omega).Pre_Now";" ((((chariot).Booster_A).Motor_Driver).PID_Omega).Pre_Target";" ((((chariot).Booster_B).Motor_Driver).PID_Omega).Pre_Now";" ((((chariot).Booster_B).Motor_Driver).PID_Omega).Pre_Target"], ColWidths=[100;100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[641;100;105;100;100;127;149;171;171]
+TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[339;116;100;116;1224]
+TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;614]
 WatchedExpression="ang", Window=Watched Data 1
 WatchedExpression="chariot", RefreshRate=5, Window=Watched Data 1
-WatchedExpression="yaw_offset", Window=Watched Data 1

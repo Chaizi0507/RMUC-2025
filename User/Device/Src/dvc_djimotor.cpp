@@ -370,7 +370,7 @@ void Class_DJI_Motor_GM6020::TIM_Alive_PeriodElapsedCallback()
     }
     Pre_Flag = Flag;
 }
-float ang = 0.0f,ome = 0.f;
+
 /**
  * @brief TIM定时器中断计算回调函数
  *
@@ -407,14 +407,12 @@ void Class_DJI_Motor_GM6020::TIM_PID_PeriodElapsedCallback()
     case (DJI_Motor_Control_Method_ANGLE):
     {
         PID_Angle.Set_Target(Target_Angle);
-        //PID_Angle.Set_Target(ang);
         PID_Angle.Set_Now(Transform_Angle);//转换后的角度，右手螺旋定律，标准坐标系
         PID_Angle.TIM_Adjust_PeriodElapsedCallback();
 
         Target_Omega_Angle = PID_Angle.Get_Out();
 
         PID_Omega.Set_Target(Target_Omega_Angle);
-        //PID_Omega.Set_Target(ome);
         PID_Omega.Set_Now(Transform_Omega);
         PID_Omega.TIM_Adjust_PeriodElapsedCallback();
 

@@ -576,9 +576,11 @@ void Class_Chariot::Control_Booster()
             if (DR16.Get_Right_Switch() == DR16_Switch_Status_UP)
             {
                 Booster_A.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
+                Booster_A.Set_Friction_Control_Type(Friction_Control_Type_ENABLE);
                 Booster_A.Set_Booster_Control_Type(Booster_Control_Type_REPEATED);
                 // if (DR16.Get_Yaw() >= -0.2 && DR16.Get_Yaw() <= 0.2)
                 // {
+                //     //Booster_A.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
                 //     booster_sign_a = 0;
                 // }
                 // else if (DR16.Get_Yaw() >= 0.8 && booster_sign_a == 0) // 单发
@@ -595,9 +597,11 @@ void Class_Chariot::Control_Booster()
             else if(DR16.Get_Right_Switch() == DR16_Switch_Status_DOWN)
             {
                 Booster_B.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
+                Booster_B.Set_Friction_Control_Type(Friction_Control_Type_ENABLE);
                 Booster_B.Set_Booster_Control_Type(Booster_Control_Type_REPEATED);
                 // if (DR16.Get_Yaw() >= -0.2 && DR16.Get_Yaw() <= 0.2)
                 // {
+                //     //Booster_B.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
                 //     booster_sign_b = 0;
                 // }
                 // else if (DR16.Get_Yaw() >= 0.8 && booster_sign_b == 0) // 单发

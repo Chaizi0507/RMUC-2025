@@ -945,6 +945,24 @@ struct Struct_Referee_Rx_Data_Robot_Dart_Command
 } __attribute__((packed));
 
 /**
+ * @brief 裁判系统经过处理的数据, 0x020B机器人位置, 10Hz发送
+ *
+ */
+struct Struct_Referee_Rx_Data_Robot_Ally_Position
+{
+    float hero_x;  
+    float hero_y;  
+    float engineer_x;  
+    float engineer_y;  
+    float standard_3_x;  
+    float standard_3_y;  
+    float standard_4_x;  
+    float standard_4_y;  
+    float reserved_a;  
+    float reserved_b;
+} __attribute__((packed));
+
+/**
  * @brief 裁判系统发送或接收的数据, 0x0301机器人间交互信息, 用户自主发送
  * TODO 视情况启用
  * Header 0x0200~0x02ff
@@ -1283,6 +1301,7 @@ protected:
     Struct_Referee_Rx_Data_Robot_RFID Robot_RFID;
     //飞镖状态
     Struct_Referee_Rx_Data_Robot_Dart_Command Robot_Dart_Command;
+    //敌军位置
     //客户端接收小地图交互信息
     Struct_Referee_Tx_Data_Interaction_Client_Receive Interaction_Client_Receive;
 

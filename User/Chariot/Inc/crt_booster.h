@@ -141,7 +141,8 @@ protected:
 
     //常量
     uint16_t Heat_Max = 400;
-
+    uint16_t Cooling_Value = 80;
+    float Heat_Consumption = 10.f;
     //拨弹盘堵转扭矩阈值, 超出被认为卡弹
     uint16_t Driver_Torque_Threshold = 8500;
     //摩擦轮单次判定发弹阈值, 超出被认为发射子弹
@@ -151,7 +152,10 @@ protected:
 
     //内部变量
     uint16_t Heat;
-
+    float shoot_time = 0.f;
+    float ShootTime = 0.f;
+    float shoot_speed = 0.f;
+    float Now_Angle = 0.f;
     //读变量
 
     //拨弹盘默认速度, 一圈八发子弹, 此速度下与冷却均衡
