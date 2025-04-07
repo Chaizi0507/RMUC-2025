@@ -275,6 +275,7 @@ public:
     void MiniPC_Update();
     void PID_Update();
     void Limit_Update();
+    float Adjust_Target(float Target,float Now);
 
     IMU_Data IMU_Data_A;
     IMU_Data IMU_Data_B;

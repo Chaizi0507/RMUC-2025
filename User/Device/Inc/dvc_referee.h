@@ -1127,11 +1127,18 @@ struct Struct_Referee_Tx_Data_Interaction_Remote_Control
  */
 struct Struct_Referee_Tx_Data_Interaction_Client_Receive
 {
-    Enum_Referee_Data_Robots_ID Robot_ID;
-    uint8_t Reserved_1;
-    float Coordinate_X;
-    float Coordinate_Y;
-    uint8_t Reserved_2;
+    uint16_t hero_position_x; 
+    uint16_t hero_position_y; 
+    uint16_t engineer_position_x; 
+    uint16_t engineer_position_y; 
+    uint16_t infantry_3_position_x; 
+    uint16_t infantry_3_position_y; 
+    uint16_t infantry_4_position_x; 
+    uint16_t infantry_4_position_y; 
+    uint16_t infantry_5_position_x; 
+    uint16_t infantry_5_position_y; 
+    uint16_t sentry_position_x; 
+    uint16_t sentry_position_y; 
 } __attribute__((packed));
 
 /**
@@ -1217,6 +1224,14 @@ public:
     inline float Get_Radar_Send_Coordinate_X();
     inline float Get_Radar_Send_Coordinate_Y();
     inline uint32_t Get_Central_Data();
+    inline uint16_t Get_Hero_Position_X();
+    inline uint16_t Get_Hero_Position_Y();
+    inline uint16_t Get_Engineer_Position_X();
+    inline uint16_t Get_Engineer_Position_Y();
+    inline uint16_t Get_Infantry_3_Position_X();
+    inline uint16_t Get_Infantry_3_Position_Y();
+    inline uint16_t Get_Infantry_4_Position_X();
+    inline uint16_t Get_Infantry_4_Position_Y();
 
     #ifdef GIMBAL
     inline void Set_Robot_ID(Enum_Referee_Data_Robots_ID __Robot_ID);
@@ -2187,37 +2202,73 @@ uint16_t Class_Referee::Get_Dart_Last_Confirm_Timestamp()
     return (Robot_Dart_Command.Last_Confirm_Timestamp);
 }
 
-/**
- * @brief 获取雷达发送目标机器人ID
- *
- * @return Enum_Referee_Data_Robots_ID 雷达发送目标的机器人ID
- */
-Enum_Referee_Data_Robots_ID Class_Referee::Get_Radar_Send_Robot_ID()
+// /**
+//  * @brief 获取雷达发送目标机器人ID
+//  *
+//  * @return Enum_Referee_Data_Robots_ID 雷达发送目标的机器人ID
+//  */
+// Enum_Referee_Data_Robots_ID Class_Referee::Get_Radar_Send_Robot_ID()
+// {
+//     return (Interaction_Client_Receive.Robot_ID);
+// }
+
+// /**
+//  * @brief 获取雷达发送目标机器人位置x
+//  *
+//  * @return float 雷达发送目标机器人位置x
+//  */
+// float Class_Referee::Get_Radar_Send_Coordinate_X()
+// {
+//     return (Interaction_Client_Receive.Coordinate_X);
+// }
+
+// /**
+//  * @brief 获取雷达发送目标机器人位置y
+//  *
+//  * @return float 雷达发送目标机器人位置y
+//  */
+// float Class_Referee::Get_Radar_Send_Coordinate_Y()
+// {
+//     return (Interaction_Client_Receive.Coordinate_Y);
+// }
+uint16_t Class_Referee::Get_Hero_Position_X()
 {
-    return (Interaction_Client_Receive.Robot_ID);
+    return (Interaction_Client_Receive.hero_position_x);
 }
 
-/**
- * @brief 获取雷达发送目标机器人位置x
- *
- * @return float 雷达发送目标机器人位置x
- */
-float Class_Referee::Get_Radar_Send_Coordinate_X()
+uint16_t Class_Referee::Get_Hero_Position_Y()
 {
-    return (Interaction_Client_Receive.Coordinate_X);
+    return (Interaction_Client_Receive.hero_position_y);
 }
 
-/**
- * @brief 获取雷达发送目标机器人位置y
- *
- * @return float 雷达发送目标机器人位置y
- */
-float Class_Referee::Get_Radar_Send_Coordinate_Y()
+uint16_t Class_Referee::Get_Engineer_Position_X()
 {
-    return (Interaction_Client_Receive.Coordinate_Y);
+    return (Interaction_Client_Receive.engineer_position_x);
 }
 
+uint16_t Class_Referee::Get_Engineer_Position_Y()
+{
+    return (Interaction_Client_Receive.engineer_position_y);
+}
+uint16_t Class_Referee::Get_Infantry_3_Position_X()
+{
+    return (Interaction_Client_Receive.infantry_3_position_x);
+}
 
+uint16_t Class_Referee::Get_Infantry_3_Position_Y()
+{
+    return (Interaction_Client_Receive.infantry_3_position_y);
+}
+
+uint16_t Class_Referee::Get_Infantry_4_Position_X()
+{
+    return (Interaction_Client_Receive.infantry_4_position_x);
+}
+
+uint16_t Class_Referee::Get_Infantry_4_Position_Y()
+{
+    return (Interaction_Client_Receive.infantry_4_position_y);
+}
 /**
  * @brief 设置机器人ID
  *

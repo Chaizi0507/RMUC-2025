@@ -296,6 +296,11 @@ void Gimbal_Device_CAN3_Callback(Struct_CAN_Rx_Buffer *CAN_RxMessage){
         {
             chariot.CAN_Gimbal_Rx_Chassis_Callback();
         }
+        break;
+        case (0x98):
+        {
+            chariot.CAN_Gimbal_Rx_Chassis_Callback();
+        }
 	}
 }
 #endif

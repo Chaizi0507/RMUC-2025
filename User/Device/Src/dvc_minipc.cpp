@@ -55,6 +55,7 @@ void Class_MiniPC::Data_Process()
 extern Referee_Rx_A_t CAN3_Chassis_Rx_Data_A;
 extern Referee_Rx_B_t CAN3_Chassis_Rx_Data_B;
 extern Referee_Rx_C_t CAN3_Chassis_Rx_Data_C;
+extern Referee_Rx_D_t CAN3_Chassis_Rx_Data_D;
 void Class_MiniPC::Output()
 {
 	Data_MCU_To_NUC.header                         = Frame_Header;
@@ -72,6 +73,14 @@ void Class_MiniPC::Output()
   Data_MCU_To_NUC.Self_Base_HP                   = CAN3_Chassis_Rx_Data_B.self_base_HP;   
   Data_MCU_To_NUC.Color_Invincible_State         = CAN3_Chassis_Rx_Data_A.color_invincible_state << 7 | CAN3_Chassis_Rx_Data_A.color_invincible_state << 5;
   Data_MCU_To_NUC.Projectile_allowance           = CAN3_Chassis_Rx_Data_B.projectile_allowance_17mm;
+  // Data_MCU_To_NUC.Hero_Position_X                = CAN3_Chassis_Rx_Data_D.Hero_Position_X;
+  // Data_MCU_To_NUC.Hero_Position_Y                = CAN3_Chassis_Rx_Data_D.Hero_Position_Y;
+  // Data_MCU_To_NUC.Engineer_Position_X            = CAN3_Chassis_Rx_Data_D.Engineer_Position_X;
+  // Data_MCU_To_NUC.Engineer_Position_Y            = CAN3_Chassis_Rx_Data_D.Engineer_Position_Y;
+  // Data_MCU_To_NUC.Infantry_3_Position_X          = CAN3_Chassis_Rx_Data_D.Infantry_3_Position_X;
+  // Data_MCU_To_NUC.Infantry_3_Position_Y          = CAN3_Chassis_Rx_Data_D.Infantry_3_Position_Y;
+  // Data_MCU_To_NUC.Infantry_4_Position_X          = CAN3_Chassis_Rx_Data_D.Infantry_4_Position_X;
+  // Data_MCU_To_NUC.Infantry_4_Position_Y          = CAN3_Chassis_Rx_Data_D.Infantry_4_Position_Y;
   Data_MCU_To_NUC.crc16                          = 0xffff;
 
 	memcpy(USB_Manage_Object->Tx_Buffer, &Data_MCU_To_NUC, sizeof(Struct_MiniPC_Tx_Data));

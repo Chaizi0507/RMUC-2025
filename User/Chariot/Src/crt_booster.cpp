@@ -274,7 +274,7 @@ void Class_Booster::Output()
             Motor_Friction_Left.Set_DJI_Motor_Control_Method(DJI_Motor_Control_Method_OMEGA);
             Motor_Friction_Right.Set_DJI_Motor_Control_Method(DJI_Motor_Control_Method_OMEGA);
 
-            Driver_Angle = Now_Angle - 2.0f * PI / 8.0f * 5.0f; //五连发
+            Driver_Angle = Now_Angle - 2.0f * PI / 8.0f * 5.0f; //五连发5
             // Driver_Angle -= 2.0f * PI / 8.0f * 5.0f; //五连发
             Motor_Driver.Set_Target_Radian(Driver_Angle);
 

@@ -192,7 +192,7 @@ struct Struct_MiniPC_Rx_Data
     int16_t Chassis_Angular_Velocity_Yaw;                    // 底盘转动的角速度, rad/s
     int16_t MiniPC_To_Chassis_Target_Velocity_X;             // 目标线速度 x
     int16_t MiniPC_To_Chassis_Target_Velocity_Y;             // 目标线速度 y
-    int16_t Gimbal_Angular_Velocity_Yaw_Main;                     // 目标角速度 w
+    int16_t Gimbal_Angular_Velocity_Yaw_Main;                    // 目标角速度 w
     int16_t Gimbal_Angular_Velocity_Yaw_A;
     int16_t Gimbal_Angular_Velocity_Pitch_A;                     // 目标角速度 p   
     int16_t Gimbal_Angular_Velocity_Yaw_B;
@@ -232,6 +232,14 @@ struct Struct_MiniPC_Tx_Data
     uint16_t Projectile_allowance; // 允许发弹量
     uint16_t Remaining_Time;       // 比赛剩余时间
     uint8_t Color_Invincible_State;      // 敌对方无敌状态/自身颜色
+    // uint8_t Hero_Position_X;
+    // uint8_t Hero_Position_Y;
+    // uint8_t Engineer_Position_X;
+    // uint8_t Engineer_Position_Y;
+    // uint8_t Infantry_3_Position_X;
+    // uint8_t Infantry_3_Position_Y;
+    // uint8_t Infantry_4_Position_X;
+    // uint8_t Infantry_4_Position_Y;
     uint16_t crc16;
 } __attribute__((packed));
 
@@ -262,7 +270,17 @@ typedef __packed struct // 0x0207 实时射击信息
     uint16_t reserved;
 } Referee_Rx_C_t;
 
-
+typedef __packed struct // 0x0207 实时射击信息
+{
+    uint8_t Hero_Position_X;
+    uint8_t Hero_Position_Y;
+    uint8_t Engineer_Position_X;
+    uint8_t Engineer_Position_Y;
+    uint8_t Infantry_3_Position_X;
+    uint8_t Infantry_3_Position_Y;
+    uint8_t Infantry_4_Position_X;
+    uint8_t Infantry_4_Position_Y;
+} Referee_Rx_D_t;
 
 class Class_MiniPC
 {

@@ -67,6 +67,7 @@ uint8_t CAN_Supercap_Tx_Data[8];
 uint8_t CAN3_Chassis_Tx_Data_A[8];   //底盘给云台发送缓冲区
 uint8_t CAN3_Chassis_Tx_Data_B[8];   //底盘给云台发送缓冲区
 uint8_t CAN3_Chassis_Tx_Data_C[8];   //底盘给云台发送缓冲区
+uint8_t CAN3_Chassis_Tx_Data_D[8];   //底盘给云台发送缓冲区
 uint8_t CAN3_Gimbal_Tx_Chassis_Data[8];  //云台给底盘发送缓冲区
 
 /*********LK电机 控制缓冲区***********/
@@ -335,6 +336,7 @@ void TIM_CAN_PeriodElapsedCallback()
         CAN_Send_Data(&hfdcan3, 0x88, CAN3_Chassis_Tx_Data_A, 8);
         CAN_Send_Data(&hfdcan3, 0x99, CAN3_Chassis_Tx_Data_B, 8);
         CAN_Send_Data(&hfdcan3, 0x78, CAN3_Chassis_Tx_Data_C, 8);
+        CAN_Send_Data(&hfdcan3, 0x98, CAN3_Chassis_Tx_Data_D, 8);
         //超电
         CAN_Send_Data(&hfdcan3, 0x66, CAN_Supercap_Tx_Data, 8);
         mod10 = 0;
@@ -357,14 +359,14 @@ void TIM_CAN_PeriodElapsedCallback()
     {
         mod5 = 0;
         //  B
-        CAN_Send_Data(&hfdcan1, 0x1ff, CAN1_0x1ff_Tx_Data, 8); //摩擦轮 按照0x1ff ID 发送 可控制多个电机
+        // CAN_Send_Data(&hfdcan1, 0x1ff, CAN1_0x1ff_Tx_Data, 8); //摩擦轮 按照0x1ff ID 发送 可控制多个电机
         CAN_Send_Data(&hfdcan1, 0x1fe, CAN1_0x1fe_Tx_Data, 8); //GM6020  按照0x1fe ID 发送 可控制多个电机
         //  A
         CAN_Send_Data(&hfdcan2, 0x1fe, CAN2_0x1fe_Tx_Data, 8); //GM6020  按照0x1fe ID 发送 可控制多个电机
-        CAN_Send_Data(&hfdcan2, 0x1ff, CAN2_0x1ff_Tx_Data, 8); //摩擦轮 按照0x1ff ID 发送 可控制多个电机
+        // CAN_Send_Data(&hfdcan2, 0x1ff, CAN2_0x1ff_Tx_Data, 8); //摩擦轮 按照0x1ff ID 发送 可控制多个电机
 
         //  CAN3  下板 大yaw        
-        CAN_Send_Data(&hfdcan3, 0x200, CAN3_0x200_Tx_Data, 8); //拨弹盘  按照0x200 ID 发送 可控制多个电机
+        // CAN_Send_Data(&hfdcan3, 0x200, CAN3_0x200_Tx_Data, 8); //拨弹盘  按照0x200 ID 发送 可控制多个电机
         CAN_Send_Data(&hfdcan3, 0x77, CAN3_Gimbal_Tx_Chassis_Data, 8); //给底盘发送控制命令 按照0x77 ID 发送
     }
     if(mod2 == 2)

@@ -87,6 +87,8 @@ void Class_Chariot::CAN_Chassis_Tx_Gimbal_Callback()
     uint8_t Flag[6] = {0};
     float Count[6] = {0};
     float Pre_Count[6] = {0};
+    uint16_t Position[8] = {0};
+    uint8_t Trans_Position[8] = {0};
     //数据更新
     if(Referee.Get_ID() == Referee_Data_Robots_ID_RED_SENTRY_7)
     {
@@ -152,16 +154,26 @@ void Class_Chariot::CAN_Chassis_Tx_Gimbal_Callback()
             Count[i] = 0;
         }
     }
+    Position[0] = Referee.Get_Hero_Position_X();
+    Position[1] = Referee.Get_Hero_Position_Y();
+    Position[2] = Referee.Get_Engineer_Position_X();
+    Position[3] = Referee.Get_Engineer_Position_Y();
+    Position[4] = Referee.Get_Infantry_3_Position_X();
+    Position[5] = Referee.Get_Infantry_3_Position_Y();
+    Position[6] = Referee.Get_Infantry_4_Position_X();
+    Position[7] = Referee.Get_Infantry_4_Position_Y();
+    for(int i = 0;i < 8;i++)
+    {
+        Trans_Position[i] = (uint8_t)((float(Position[i]) / 3000.f) * 255.f);
+    }
 
     //发送数据给云台
     //A包
     CAN3_Chassis_Tx_Data_A[0] = Referee.Get_Game_Stage();
     CAN3_Chassis_Tx_Data_A[1] = Referee.Get_Remaining_Time() >> 8;
     CAN3_Chassis_Tx_Data_A[2] = Referee.Get_Remaining_Time();
-    //memcpy(CAN3_Chassis_Tx_Data_A + 3, &Self_HP, sizeof(uint16_t));
     CAN3_Chassis_Tx_Data_A[3] = Referee.Get_HP() >> 8;
     CAN3_Chassis_Tx_Data_A[4] = Referee.Get_HP();
-    //memcpy(CAN3_Chassis_Tx_Data_A + 5, &Self_Outpost_HP, sizeof(uint16_t));
     CAN3_Chassis_Tx_Data_A[5] = Self_Outpost_HP >> 8;
     CAN3_Chassis_Tx_Data_A[6] = Self_Outpost_HP;
     CAN3_Chassis_Tx_Data_A[7] = color << 7 | Flag[5] << 5 | Flag[4] << 4 | Flag[3] << 3 | Flag[2] << 2 | Flag[1] << 1 | Flag[0] << 0;
@@ -177,7 +189,12 @@ void Class_Chariot::CAN_Chassis_Tx_Gimbal_Callback()
     //C包
     memcpy(CAN3_Chassis_Tx_Data_C + 0, &Shooter_Barrel_Cooling_Value_A, sizeof(uint16_t));
     memcpy(CAN3_Chassis_Tx_Data_C + 2, &Shooter_Barrel_Cooling_Value_B, sizeof(uint16_t));
-    
+
+    //D包
+    for(int i = 0;i < 8;i++)
+    {
+        CAN3_Chassis_Tx_Data_D[i] = Trans_Position[i];
+    }
 }
 #endif
 
@@ -236,6 +253,7 @@ Referee_Rx_A_t CAN3_Chassis_Rx_Data_A;
 Referee_Rx_A_t PRE_CAN3_Chassis_Rx_Data_A;
 Referee_Rx_B_t CAN3_Chassis_Rx_Data_B;
 Referee_Rx_C_t CAN3_Chassis_Rx_Data_C;
+Referee_Rx_D_t CAN3_Chassis_Rx_Data_D;
 volatile int atk_flag = 0;
 int atk_cnt = 0;
 #ifdef GIMBAL
@@ -270,6 +288,9 @@ void Class_Chariot::CAN_Gimbal_Rx_Chassis_Callback()
             Booster_A.Set_Heat(CAN3_Chassis_Rx_Data_C.Booster_Heat_CD_A);
             Booster_B.Set_Heat(CAN3_Chassis_Rx_Data_C.Booster_Heat_CD_B);
             break;
+        }
+        case (0x98):{
+            memcpy(&CAN3_Chassis_Rx_Data_D, CAN_Manage_Object->Rx_Buffer.Data, sizeof(Referee_Rx_D_t));
         }
     }
 }
