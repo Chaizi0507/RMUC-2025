@@ -378,10 +378,9 @@ void Class_Tricycle_Chassis::TIM_Calculate_PeriodElapsedCallback(Enum_Sprint_Sta
     Slope_Omega.TIM_Calculate_PeriodElapsedCallback();
     
     //速度解算
-    Speed_Resolution();
-    
-    
-    /***************************超级电容*********************************/     
+    Speed_Resolution();    
+    /***************************超级电容*********************************/
+    Supercap.Set_Supercap_Mode(Get_Supercap_Mode());
     Supercap.TIM_Supercap_PeriodElapsedCallback();
 
     #if POWER_CONTROL == 1

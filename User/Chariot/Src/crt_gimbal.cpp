@@ -50,12 +50,12 @@ void Class_Gimbal::Init()
     
     // pitch轴电机
     Motor_Pitch_A.PID_Angle.Init(25.f, 0.0f, 0.0f, 0.0f, 2.f, 650.f);
-    Motor_Pitch_A.PID_Omega.Init(75.0f, 400.0f, 0.0f, 0.0f, 6000, Motor_Pitch_A.Get_Output_Max(),0.f,0.f,40.f);
+    Motor_Pitch_A.PID_Omega.Init(90.0f, 400.0f, 0.0f, 0.0f, 6000, Motor_Pitch_A.Get_Output_Max(),0.f,0.f,40.f);
     Motor_Pitch_A.PID_Torque.Init(0.f, 0.0f, 0.0f, 0.0f, Motor_Pitch_A.Get_Output_Max(), Motor_Pitch_A.Get_Output_Max());
     Motor_Pitch_A.Init(&hfdcan2, DJI_Motor_ID_0x206, DJI_Motor_Control_Method_ANGLE, 3413);
 
     Motor_Pitch_B.PID_Angle.Init(25.f, 0.0f, 0.00f, 0.0f, 2.f, 650.f);
-    Motor_Pitch_B.PID_Omega.Init(75.0f, 400.0f, 0.0f, 0.0f, 6000, Motor_Pitch_B.Get_Output_Max(),0.f,0.f,40.f);
+    Motor_Pitch_B.PID_Omega.Init(90.0f, 400.0f, 0.0f, 0.0f, 6000, Motor_Pitch_B.Get_Output_Max(),0.f,0.f,40.f);
     Motor_Pitch_B.PID_Torque.Init(0.f, 0.0f, 0.0f, 0.0f, Motor_Pitch_B.Get_Output_Max(), Motor_Pitch_B.Get_Output_Max());
     Motor_Pitch_B.Init(&hfdcan1, DJI_Motor_ID_0x206, DJI_Motor_Control_Method_ANGLE, 3413);
 
@@ -134,8 +134,8 @@ void Class_Gimbal::Output()
             Motor_Pitch_B.Set_DJI_Motor_Control_Method(DJI_Motor_Control_Method_ANGLE);
 
             // 限制角度
-            Math_Constrain(&Target_Pitch_Angle_A, Min_Pitch_Angle, Max_Pitch_Angle);
-            Math_Constrain(&Target_Pitch_Angle_B, Min_Pitch_Angle, Max_Pitch_Angle);
+            // Math_Constrain(&Target_Pitch_Angle_A, Min_Pitch_Angle, Max_Pitch_Angle);
+            // Math_Constrain(&Target_Pitch_Angle_B, Min_Pitch_Angle, Max_Pitch_Angle);
             Math_Constrain(&Target_Yaw_Angle_A, Min_Yaw_Angle_A, Max_Yaw_Angle_A);
             Math_Constrain(&Target_Yaw_Angle_B, Min_Yaw_Angle_B, Max_Yaw_Angle_B);
 
@@ -235,10 +235,20 @@ void Class_Gimbal::Output()
                     else if (Get_True_Angle_Yaw_A() <= -10.f && Get_True_Angle_Yaw_A() > -90.0f)
                         Motor_Yaw_A.Set_Target_Omega_Angle(CRUISE_SPEED_YAW);
 
-                    if (Get_True_Angle_Pitch_A() >= 15.0f)
-                        Motor_Pitch_A.Set_Target_Omega_Angle(-CRUISE_SPEED_PITCH);
-                    else if (Get_True_Angle_Pitch_A() <= 0.0f)
-                        Motor_Pitch_A.Set_Target_Omega_Angle(CRUISE_SPEED_PITCH);
+                    if(MiniPC->Get_Outpost_Mode_A() == Outpost_Mode_ENABLE)
+                    {
+                        if (Get_True_Angle_Pitch_A() >= 15.0f)
+                            Motor_Pitch_A.Set_Target_Omega_Angle(-CRUISE_SPEED_PITCH);
+                        else if (Get_True_Angle_Pitch_A() <= -20.0f)
+                            Motor_Pitch_A.Set_Target_Omega_Angle(CRUISE_SPEED_PITCH);
+                    }
+                    else if(MiniPC->Get_Outpost_Mode_A() == Outpost_Mode_DISABLE)
+                    {
+                        if (Get_True_Angle_Pitch_A() >= 15.0f)
+                            Motor_Pitch_A.Set_Target_Omega_Angle(-CRUISE_SPEED_PITCH);
+                        else if (Get_True_Angle_Pitch_A() <= 0.0f)
+                            Motor_Pitch_A.Set_Target_Omega_Angle(CRUISE_SPEED_PITCH);
+                    }
 
                     // 云台控制方式
                     if(MiniPC->Get_Rx_Pitch_Angle_A() != 0.0f || MiniPC->Get_Rx_Yaw_Angle_A() != 0.0f)//00正常巡航
@@ -330,11 +340,21 @@ void Class_Gimbal::Output()
                         Motor_Yaw_B.Set_Target_Omega_Angle(-CRUISE_SPEED_YAW);
                     }
 
-                    if (Get_True_Angle_Pitch_B() >= 15.0f)
-                        Motor_Pitch_B.Set_Target_Omega_Angle(-CRUISE_SPEED_PITCH);
-                    else if (Get_True_Angle_Pitch_B() <= 0.0f)
-                        Motor_Pitch_B.Set_Target_Omega_Angle(CRUISE_SPEED_PITCH);
-
+                    if(MiniPC->Get_Outpost_Mode_B() == Outpost_Mode_ENABLE)
+                    {
+                        if (Get_True_Angle_Pitch_B() >= 15.0f)
+                            Motor_Pitch_B.Set_Target_Omega_Angle(-CRUISE_SPEED_PITCH);
+                        else if (Get_True_Angle_Pitch_B() <= -20.0f)
+                            Motor_Pitch_B.Set_Target_Omega_Angle(CRUISE_SPEED_PITCH);
+                    }
+                    else if (MiniPC->Get_Outpost_Mode_B() == Outpost_Mode_DISABLE)
+                    {
+                        if (Get_True_Angle_Pitch_B() >= 15.0f)
+                            Motor_Pitch_B.Set_Target_Omega_Angle(-CRUISE_SPEED_PITCH);
+                        else if (Get_True_Angle_Pitch_B() <= 0.0f)
+                            Motor_Pitch_B.Set_Target_Omega_Angle(CRUISE_SPEED_PITCH);
+                    }
+                    
                     if(MiniPC->Get_Rx_Pitch_Angle_B() != 0.f || MiniPC->Get_Rx_Yaw_Angle_B() != 0.f)//00巡航
                     {
                         B_Invert_Flag = 0;//不用了(有bug)，先置为0，启用置1
@@ -567,7 +587,6 @@ void Class_Gimbal::Yaw_Angle_Transform_B()
         temp_yaw -= 360.f;
     if(temp_yaw < -180.f)
         temp_yaw += 360.f;
-
     Set_True_Angle_Yaw_B(temp_yaw);
 
     //坐标系转换
@@ -636,33 +655,33 @@ int invert_flag_main = 0;
 void Class_Gimbal::Control_Update_Main()
 {
     
-    // float temp_error = 0, temp_min = 0, pre_angle = 0, pre_omega = 0;
+    float temp_error = 0, temp_min = 0, pre_angle = 0, pre_omega = 0;
 
-    // temp_error = Get_Target_Yaw_Angle() - Boardc_BMI.Get_Angle_Yaw() - invert_flag_main * 180;
-    // while (temp_error > 360.0f)
-    //     temp_error -= 360.0f;
-    // while (temp_error < 0.0f)
-    //     temp_error += 360.0f;
-    // if (fabs(temp_error) < (360.0f - fabs(temp_error)))
-    //     temp_min = fabs(temp_error);
-    // else
-    //     temp_min = 360.0f - fabs(temp_error);
-    // if (temp_min > 150.0f)
-    // {
-    //     invert_flag_main = !invert_flag_main;
-    //     // 重新计算误差
-    //     temp_error = Get_Target_Yaw_Angle() - Boardc_BMI.Get_Angle_Yaw() - invert_flag_main * 180.0f;
-    // }
+    temp_error = Get_Target_Yaw_Angle() - Boardc_BMI.Get_Angle_Yaw() - invert_flag_main * 180;
+    while (temp_error > 360.0f)
+        temp_error -= 360.0f;
+    while (temp_error < 0.0f)
+        temp_error += 360.0f;
+    if (fabs(temp_error) < (360.0f - fabs(temp_error)))
+        temp_min = fabs(temp_error);
+    else
+        temp_min = 360.0f - fabs(temp_error);
+    if (temp_min > 330.0f)
+    {
+        invert_flag_main = !invert_flag_main;
+        // 重新计算误差
+        temp_error = Get_Target_Yaw_Angle() - Boardc_BMI.Get_Angle_Yaw() - invert_flag_main * 180.0f;
+    }
 
-    // if (temp_error > 180.0f)
-    //     temp_error -= 360.0f;
-    // else if (temp_error < -180.0f)
-    //     temp_error += 360.0f;
+    if (temp_error > 180.0f)
+        temp_error -= 360.0f;
+    else if (temp_error < -180.0f)
+        temp_error += 360.0f;
     
 
-    // Motor_Main_Yaw.Set_Target_Angle(Boardc_BMI.Get_Angle_Yaw() + temp_error);
+    Motor_Main_Yaw.Set_Target_Angle(Boardc_BMI.Get_Angle_Yaw() + temp_error);
 
-    Motor_Main_Yaw.Set_Target_Angle(Adjust_Target(Motor_Main_Yaw.Get_Target_Angle(),Boardc_BMI.Get_Angle_Yaw()));
+    //Motor_Main_Yaw.Set_Target_Angle(Adjust_Target(Motor_Main_Yaw.Get_Target_Angle(),Boardc_BMI.Get_Angle_Yaw()));
     Motor_Main_Yaw.Set_Transform_Angle(Boardc_BMI.Get_Angle_Yaw());
     Motor_Main_Yaw.Set_Transform_Omega(Boardc_BMI.Get_Gyro_Yaw());
 

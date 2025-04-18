@@ -138,7 +138,8 @@ void Class_FSM_Antijamming::Reload_TIM_Status_PeriodElapsedCallback()
         {
             //卡弹反应状态->准备卡弹处理
             Booster->Motor_Driver.Set_DJI_Motor_Control_Method(DJI_Motor_Control_Method_ANGLE);
-            Booster->Driver_Angle = Booster->Motor_Driver.Get_Now_Radian() + PI / 12.0f;
+            //Booster->Driver_Angle = Booster->Motor_Driver.Get_Now_Radian() + PI / 12.0f;//原版本
+            Booster->Driver_Angle = Booster->Motor_Driver.Get_Now_Radian() + (2 * PI / 8.0f);
             Booster->Motor_Driver.Set_Target_Radian(Booster->Driver_Angle);
             Set_Status(3);
         }
@@ -161,6 +162,7 @@ void Class_FSM_Antijamming::Reload_TIM_Status_PeriodElapsedCallback()
  * @brief 发射机构初始化
  *
  */
+
 void Class_Booster::Init(Enum_Booster_Type __Booster_Type)
 {
     //正常状态, 发射嫌疑状态, 发射完成状态, 停机状态
@@ -211,6 +213,7 @@ void Class_Booster::Init(Enum_Booster_Type __Booster_Type)
  * @brief 输出到电机
  *
  */
+extern Referee_Rx_B_t CAN3_Chassis_Rx_Data_B;
 void Class_Booster::Output()
 {
     Now_Angle = Motor_Driver.Get_Now_Radian();
@@ -235,6 +238,8 @@ void Class_Booster::Output()
             Motor_Driver.Set_Out(0.0f);
             Motor_Friction_Left.Set_Out(0.0f);
             Motor_Friction_Right.Set_Out(0.0f);
+
+            shoot_time = 0;
         }
         break;
         case (Booster_Control_Type_CEASEFIRE):
@@ -305,11 +310,20 @@ void Class_Booster::Output()
             // {
             //     Motor_Driver.Set_Target_Omega_Radian(0.0f);
             // }
+            if(MiniPC->Get_Fortress_Mode() == Fortress_ENABLE)
+            {
+                
+            }
             if(shoot_time == 0)
             {
-                ShootTime = (Heat_Max + 2 * Cooling_Value) * 10;
-                shoot_speed = (10 * Heat_Max - Cooling_Value - 5 * Heat_Consumption) / (Heat_Consumption * (ShootTime / 100.f)) + Cooling_Value / Heat_Consumption;
-            }
+                ShootTime = ((Heat_Max - Heat) + 2 * Cooling_Value) * 10;
+                if(Heat_Max - Heat < 100){
+                    shoot_speed = (10 * (Heat_Max - Heat) - Cooling_Value - 3 * Heat_Consumption) / (Heat_Consumption * (ShootTime / 100.f)) + Cooling_Value / Heat_Consumption;
+                }
+                else{
+                    shoot_speed = (10 * (Heat_Max - Heat) - Cooling_Value - 5 * Heat_Consumption) / (Heat_Consumption * (ShootTime / 100.f)) + Cooling_Value / Heat_Consumption;
+                }
+            }               
             else if(0 < shoot_time && shoot_time < ShootTime)
             {
                 Driver_Omega = shoot_speed * 2 * PI / 8.f;
@@ -327,7 +341,7 @@ void Class_Booster::Output()
             {
                 shoot_time++;
             }
-            Motor_Driver.Set_Target_Omega_Radian(Default_Driver_Omega);//测试用 平常注释
+            Motor_Driver.Set_Target_Omega_Radian(Default_Driver_Omega * 2.5f);//测试用 平常注释
             Set_Friction_Control_Type(Friction_Control_Type_ENABLE);
         }
         break;  
@@ -357,7 +371,7 @@ void Class_Booster::TIM_Calculate_PeriodElapsedCallback()
     FSM_Heat_Detect.Reload_TIM_Status_PeriodElapsedCallback();
     //卡弹处理
     FSM_Antijamming.Reload_TIM_Status_PeriodElapsedCallback();
-
+    //PID输出
     Motor_Driver.TIM_PID_PeriodElapsedCallback();
     Motor_Friction_Left.TIM_PID_PeriodElapsedCallback();
     Motor_Friction_Right.TIM_PID_PeriodElapsedCallback();

@@ -17,6 +17,7 @@
 #include "drv_uart.h"
 #include "limits.h"
 #include "string.h"
+#include "drv_math.h"
 
 /* Exported macros -----------------------------------------------------------*/
 
@@ -35,7 +36,7 @@ class Class_Chariot;
 // #define RADAR_9           9
 // #define BASE_10           10
 // #define OUTPOST_11        11
-
+//#define Robot_SENTRY_7 
 #define RED 0
 #define BLUE 100
 
@@ -1150,6 +1151,7 @@ class Class_Referee
 public:
     void Init(UART_HandleTypeDef *huart, uint8_t __Frame_Header = 0xa5);
 
+    inline uint16_t Get_Circle_Index(uint16_t index){return (index%UART_Manage_Object->Rx_Buffer_Length);}
     inline Enum_Referee_Status Get_Referee_Status();
     inline Enum_Referee_Game_Status_Type Get_Game_Type();
     inline Enum_Referee_Game_Status_Stage Get_Game_Stage();
@@ -1174,9 +1176,9 @@ public:
     inline uint8_t Get_Level();
     inline uint16_t Get_HP();
     inline uint16_t Get_HP_Max();
-    inline uint16_t Get_Booster_17mm_1_Heat_CD();
+    inline uint16_t Get_Booster_17mm_Heat_CD();
     inline uint16_t Get_Booster_17mm_1_Heat_Max();
-    inline uint16_t Get_Booster_17mm_2_Heat_CD();
+    //inline uint16_t Get_Booster_17mm_2_Heat_CD();
     inline uint16_t Get_Booster_17mm_2_Heat_Max();
     inline uint16_t Get_Booster_42mm_Heat_CD();
     inline uint16_t Get_Booster_42mm_Heat_Max();
@@ -1232,6 +1234,8 @@ public:
     inline uint16_t Get_Infantry_3_Position_Y();
     inline uint16_t Get_Infantry_4_Position_X();
     inline uint16_t Get_Infantry_4_Position_Y();
+    inline uint16_t Get_Sentry_Position_X();
+    inline uint16_t Get_Sentry_Position_Y();
 
     #ifdef GIMBAL
     inline void Set_Robot_ID(Enum_Referee_Data_Robots_ID __Robot_ID);
@@ -1705,7 +1709,7 @@ uint16_t Class_Referee::Get_HP_Max()
  *
  * @return uint16_t 17mm1枪口冷却速度
  */
-uint16_t Class_Referee::Get_Booster_17mm_1_Heat_CD()
+uint16_t Class_Referee::Get_Booster_17mm_Heat_CD()
 {
 #ifdef Robot_SENTRY_7
     if (Robot_Status.Booster_17mm_1_Heat_CD == 0)
@@ -1733,21 +1737,21 @@ uint16_t Class_Referee::Get_Booster_17mm_1_Heat_Max()
 }
 
 
-/**
- * @brief 获取17mm2枪口冷却速度
- *
- * @return uint16_t 17mm2枪口冷却速度
- */
-uint16_t Class_Referee::Get_Booster_17mm_2_Heat_CD()
-{
-#ifdef Robot_SENTRY_7
-    if (Robot_Status.Booster_17mm_2_Heat_CD == 0)
-    {
-        return (40);
-    }
-#endif
-    return (Robot_Status.Shooter_Barrel_Cooling_Value);
-}
+// /**
+//  * @brief 获取17mm2枪口冷却速度
+//  *
+//  * @return uint16_t 17mm2枪口冷却速度
+//  */
+// uint16_t Class_Referee::Get_Booster_17mm_2_Heat_CD()
+// {
+// #ifdef Robot_SENTRY_7
+//     if (Robot_Status.Booster_17mm_2_Heat_CD == 0)
+//     {
+//         return (40);
+//     }
+// #endif
+//     return (Robot_Status.Shooter_Barrel_Cooling_Value);
+// }
 
 /**
  * @brief 获取17mm2枪口热量上限
@@ -2268,6 +2272,15 @@ uint16_t Class_Referee::Get_Infantry_4_Position_X()
 uint16_t Class_Referee::Get_Infantry_4_Position_Y()
 {
     return (Interaction_Client_Receive.infantry_4_position_y);
+}
+uint16_t Class_Referee::Get_Sentry_Position_X()
+{
+    return (Interaction_Client_Receive.sentry_position_x);
+}
+
+uint16_t Class_Referee::Get_Sentry_Position_Y()
+{
+    return (Interaction_Client_Receive.sentry_position_y);
 }
 /**
  * @brief 设置机器人ID

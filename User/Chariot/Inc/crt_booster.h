@@ -22,6 +22,7 @@
 #include "alg_fsm.h"
 #include "dvc_referee.h"
 #include "dvc_djimotor.h"
+#include "dvc_minipc.h"
 
 /* Exported macros -----------------------------------------------------------*/
 
@@ -105,6 +106,8 @@ public:
 
     //裁判系统
     Class_Referee *Referee;
+    //上位机
+    Class_MiniPC *MiniPC;
 
     //拨弹盘电机
     Class_DJI_Motor_C610 Motor_Driver;
@@ -132,6 +135,7 @@ public:
     inline void Set_Driver_Omega(float __Driver_Omega);
     inline void Set_Booster_Type(Enum_Booster_Type __Booster_Type);
     inline void Set_Heat(uint16_t __Heat);
+    inline void Set_Cooling_Value(uint16_t __Cooling_Value);
 
     void TIM_Calculate_PeriodElapsedCallback();
 	void Output();
@@ -289,6 +293,10 @@ void Class_Booster::Set_Friction_Omega(float __Friction_Omega)
 void Class_Booster::Set_Driver_Omega(float __Driver_Omega)
 {
     Driver_Omega = __Driver_Omega;
+}
+void Class_Booster::Set_Cooling_Value(uint16_t __Cooling_Value)
+{
+    Cooling_Value = __Cooling_Value;
 }
 
 #endif
