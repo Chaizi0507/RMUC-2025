@@ -188,6 +188,8 @@ void Class_Booster::Init(Enum_Booster_Type __Booster_Type)
             Motor_Friction_Right.PID_Omega.Init(80.0f, 0.0f, 0.f, 0.0f, 2000.0f, Motor_Friction_Right.Get_Output_Max());
             Motor_Friction_Right.Init(&hfdcan2, DJI_Motor_ID_0x208, DJI_Motor_Control_Method_OMEGA, 1.0f);
             Motor_Friction_Right.CAN_Tx_Data = &(CAN2_0x1ff_Tx_Data[6]);
+
+            Friction_Omega = 680.f;
         }
         break;
         case(Booster_Type_B):{
@@ -205,6 +207,8 @@ void Class_Booster::Init(Enum_Booster_Type __Booster_Type)
             Motor_Friction_Right.PID_Omega.Init(80.0f, 0.0f, 0.f, 0.0f, 2000.0f, Motor_Friction_Right.Get_Output_Max());
             Motor_Friction_Right.Init(&hfdcan1, DJI_Motor_ID_0x207, DJI_Motor_Control_Method_OMEGA, 1.0f);
             Motor_Friction_Right.CAN_Tx_Data = &(CAN1_0x1ff_Tx_Data[4]);
+
+            Friction_Omega = 680.f;
         }    
     }
 }
@@ -254,6 +258,10 @@ void Class_Booster::Output()
                 Motor_Driver.Set_Target_Omega_Radian(0.0f);
                 Motor_Driver.Set_Out(0.f);               
             }
+            else
+            {
+                Motor_Driver.Set_Out(0.f);
+            }
             shoot_time = 0;
             Set_Friction_Control_Type(Friction_Control_Type_ENABLE);
         }
@@ -297,19 +305,6 @@ void Class_Booster::Output()
             Default_Driver_Omega = - 80.f / 10.0f / 8.0f * 2.0f * PI;
             Motor_Driver.Set_Target_Omega_Radian(Default_Driver_Omega);
             // 热量控制
-            // if(Heat < 350){
-            //     Motor_Driver.Set_Target_Omega_Radian(Driver_Omega);
-            // }
-            // else if(Heat < 370 && Heat > 350)
-            // {
-            //     float tmp_omega;       
-            //     tmp_omega = (370.f - Heat) / (400.f - 350.f) * Default_Driver_Omega;
-            //     Motor_Driver.Set_Target_Omega_Radian(tmp_omega);
-            // }
-            // else if(Heat > 370)
-            // {
-            //     Motor_Driver.Set_Target_Omega_Radian(0.0f);
-            // }
             Cooling_Value = CAN3_Chassis_Rx_Data_B.cooling_value;
             if(shoot_time == 0)
             {

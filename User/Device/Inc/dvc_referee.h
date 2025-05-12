@@ -1312,6 +1312,8 @@ public:
     inline uint16_t Get_Sentry_Position_Y();
     inline uint8_t Get_Energy_Left_Rate();
     inline uint8_t Get_Radar_Info();
+    inline uint32_t Get_Sentry_Info_1();
+    inline uint16_t Get_Sentry_Info_2();
 
     template <typename T>
     void Referee_UI_Packed_Data(T* __data);
@@ -2389,6 +2391,14 @@ uint8_t Class_Referee::Get_Energy_Left_Rate()
 uint8_t Class_Referee::Get_Radar_Info()
 {
     return (Radar_Info.radar_info);
+}
+uint32_t Class_Referee::Get_Sentry_Info_1()
+{
+    return (Sentry_Info.sentry_info);
+}
+uint16_t Class_Referee::Get_Sentry_Info_2()
+{
+    return (Sentry_Info.sentry_info_2);
 }
 /**
  * @brief 设置机器人ID

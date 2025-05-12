@@ -530,6 +530,7 @@ void MiniPC_UART_Callback(uint8_t *Buffer, uint16_t Length)
  * @brief TIM4任务回调函数
  *
  */
+extern Referee_Rx_A_t CAN3_Chassis_Rx_Data_A;
 void Task100us_TIM4_Callback()
 {
     #ifdef CHASSIS
@@ -543,7 +544,10 @@ void Task100us_TIM4_Callback()
         chariot.Gimbal.Boardc_BMI.TIM_Calculate_PeriodElapsedCallback();     
         IMUA_UART7_Callback(UART7_Manage_Object.Rx_Buffer, UART7_Manage_Object.Rx_Length);
         IMUB_USART1_Callback(UART1_Manage_Object.Rx_Buffer, UART1_Manage_Object.Rx_Length);
-
+    static int mod100 = 0;
+    mod100++;
+    if(mod100 = 100)
+    {
         #ifdef DEBUG
             if (chariot.DR16.Get_DR16_Status() == DR16_Status_DISABLE)
             {
@@ -564,6 +568,9 @@ void Task100us_TIM4_Callback()
             }
         }
         #endif
+        mod100 = 0;
+    }
+
     #endif
 }
 

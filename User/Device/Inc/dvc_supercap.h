@@ -110,12 +110,14 @@ public:
     inline Enum_Supercap_Status Get_Supercap_Status();
     inline float Get_Stored_Energy();
     inline float Get_Now_Voltage();
-    inline int16_t Get_Chassis_Power();
+    inline float Get_Chassis_Power();
     inline Enum_Control_Status Get_Control_Status();
     inline Enum_Warning_Status Get_Warning_Status();
     inline Enum_Supercap_Mode Get_Supercap_Mode();
     inline uint16_t Get_Buffer_Power();
     inline uint8_t Get_Supercap_Proportion();
+    inline uint16_t Get_Consuming_Power_Now();
+    inline float Get_Consuming_Power();
     
 
     inline void Set_Limit_Power(float __Limit_Power);
@@ -130,6 +132,9 @@ public:
 
     void TIM_UART_Tx_PeriodElapsedCallback();
     void TIM_Supercap_PeriodElapsedCallback();
+
+    //裁判系统
+    Class_Referee *Referee;
 
 protected:
     //初始化相关常量
@@ -148,7 +153,8 @@ protected:
     //常量
 
     //内部变量
-
+    float Consuming_Power = 20000.f;
+    float Chassis_Power;
     //当前时刻的超级电容接收flag
     uint32_t Flag = 0;
     //前一时刻的超级电容接收flag
@@ -224,9 +230,9 @@ float Class_Supercap::Get_Stored_Energy()
     return (Supercap_Data.Stored_Energy);
 }
 
-int16_t Class_Supercap::Get_Chassis_Power()
+float Class_Supercap::Get_Chassis_Power()
 {
-    return (CAN_Supercap_Rx_Data_Normal.Chassis_Power);
+    return (Chassis_Power);
 }
 
 // /**
@@ -248,6 +254,10 @@ float Class_Supercap::Get_Now_Voltage()
 {
     return (Supercap_Data.Supercap_Voltage);
 }
+float Class_Supercap::Get_Consuming_Power()
+{
+    return (Consuming_Power);
+}
 Enum_Supercap_Mode Class_Supercap::Get_Supercap_Mode()
 {
     return(Supercap_Mode);
@@ -259,6 +269,10 @@ uint16_t Class_Supercap::Get_Buffer_Power()
 uint8_t Class_Supercap::Get_Supercap_Proportion()
 {
     return(CAN_Supercap_Rx_Data_Normal.Cap_Proportion);
+}
+uint16_t Class_Supercap::Get_Consuming_Power_Now()
+{
+    return(CAN_Supercap_Rx_Data_Normal.Consuming_Power_Now);
 }
 /**
  * @brief 设定绝对最大限制功率

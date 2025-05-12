@@ -55,7 +55,9 @@ void Class_MiniPC::Data_Process(Enum_MiniPC_Data_Source Data_Source)
     memcpy(&CAN3_Sentry_CMD_Data[4], &Data_NUC_To_MCU.Robot_Position_X, sizeof(uint16_t));
     memcpy(&CAN3_Sentry_CMD_Data[6], &Data_NUC_To_MCU.Robot_Position_Y, sizeof(uint16_t));
     //自瞄解算
+    bullet_v = 28.f;
     Auto_aim(float(Data_NUC_To_MCU.Gimbal_Target_X_A / 100.f), float(Data_NUC_To_MCU.Gimbal_Target_Y_A / 100.f), float(Data_NUC_To_MCU.Gimbal_Target_Z_A / 100.f), &Rx_Angle_Yaw_A, &Rx_Angle_Pitch_A, &Distance_A, Booster_Type_A);
+    bullet_v = 22.f;
     Auto_aim(float(Data_NUC_To_MCU.Gimbal_Target_X_B / 100.f), float(Data_NUC_To_MCU.Gimbal_Target_Y_B / 100.f), float(Data_NUC_To_MCU.Gimbal_Target_Z_B / 100.f), &Rx_Angle_Yaw_B, &Rx_Angle_Pitch_B, &Distance_B, Booster_Type_B);
     Rx_Angle_Yaw_Main = calc_yaw(float(Data_NUC_To_MCU.Gimbal_Target_X_A / 100.f), float(Data_NUC_To_MCU.Gimbal_Target_Y_A / 100.f) + 13.5f, float(Data_NUC_To_MCU.Gimbal_Target_Z_A / 100.f));
   }
@@ -184,18 +186,18 @@ void Class_MiniPC::Output()
   // }
   // else if(CAN3_Chassis_Rx_Data_D.Infantry_3_Position_X != 0 || CAN3_Chassis_Rx_Data_D.Infantry_3_Position_Y != 0)
   // {
-  //     Data_MCU_To_NUC.Robot_Position_X = 0x02 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Infantry_3_Position_X / 255.f) * 16384.f);
-  //     Data_MCU_To_NUC.Robot_Position_Y = 0x02 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Infantry_3_Position_Y / 255.f) * 16384.f);
+  //     Data_MCU_To_NUC.Robot_Position_X = 0x01 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Infantry_3_Position_X / 255.f) * 16384.f);
+  //     Data_MCU_To_NUC.Robot_Position_Y = 0x01 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Infantry_3_Position_Y / 255.f) * 16384.f);
   // }
   // else if (CAN3_Chassis_Rx_Data_D.Infantry_4_Position_X != 0 || CAN3_Chassis_Rx_Data_D.Infantry_4_Position_Y != 0)
   // {
-  //     Data_MCU_To_NUC.Robot_Position_X = 0x03 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Infantry_4_Position_X / 255.f) * 16384.f);
-  //     Data_MCU_To_NUC.Robot_Position_Y = 0x03 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Infantry_4_Position_Y / 255.f) * 16384.f);
+  //     Data_MCU_To_NUC.Robot_Position_X = 0x02 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Infantry_4_Position_X / 255.f) * 16384.f);
+  //     Data_MCU_To_NUC.Robot_Position_Y = 0x02 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Infantry_4_Position_Y / 255.f) * 16384.f);
   // }
   // else if(CAN3_Chassis_Rx_Data_D.Sentry_Position_X != 0 || CAN3_Chassis_Rx_Data_D.Sentry_Position_Y != 0)
   // {
-  //     Data_MCU_To_NUC.Robot_Position_X = 0x01 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Sentry_Position_X / 255.f) * 16384.f);
-  //     Data_MCU_To_NUC.Robot_Position_Y = 0x01 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Sentry_Position_Y / 255.f) * 16384.f);
+  //     Data_MCU_To_NUC.Robot_Position_X = 0x03 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Sentry_Position_X / 255.f) * 16384.f);
+  //     Data_MCU_To_NUC.Robot_Position_Y = 0x03 << 14 | (uint16_t)(float(CAN3_Chassis_Rx_Data_D.Sentry_Position_Y / 255.f) * 16384.f);
   // }
   // else
   // {
@@ -214,20 +216,20 @@ void Class_MiniPC::Output()
     }
     case 1:
     {
-      Data_MCU_To_NUC.Robot_Position_X = 0x02 << 14 | CAN3_Chassis_Rx_Data_F.Infantry_3_Position_X;
-      Data_MCU_To_NUC.Robot_Position_Y = 0x02 << 14 | CAN3_Chassis_Rx_Data_F.Infantry_3_Position_Y;
+      Data_MCU_To_NUC.Robot_Position_X = 0x01 << 14 | CAN3_Chassis_Rx_Data_F.Infantry_3_Position_X;
+      Data_MCU_To_NUC.Robot_Position_Y = 0x01 << 14 | CAN3_Chassis_Rx_Data_F.Infantry_3_Position_Y;
       break;
     }
     case 2:
     {
-      Data_MCU_To_NUC.Robot_Position_X = 0x03 << 14 | CAN3_Chassis_Rx_Data_F.Infantry_4_Position_X;
-      Data_MCU_To_NUC.Robot_Position_Y = 0x03 << 14 | CAN3_Chassis_Rx_Data_F.Infantry_4_Position_Y;
+      Data_MCU_To_NUC.Robot_Position_X = 0x02 << 14 | CAN3_Chassis_Rx_Data_F.Infantry_4_Position_X;
+      Data_MCU_To_NUC.Robot_Position_Y = 0x02 << 14 | CAN3_Chassis_Rx_Data_F.Infantry_4_Position_Y;
       break;
     }
     case 3:
     {
-      Data_MCU_To_NUC.Robot_Position_X = 0x01 << 14 | CAN3_Chassis_Rx_Data_D.Sentry_Position_X;
-      Data_MCU_To_NUC.Robot_Position_Y = 0x01 << 14 | CAN3_Chassis_Rx_Data_D.Sentry_Position_Y;
+      Data_MCU_To_NUC.Robot_Position_X = 0x03 << 14 | CAN3_Chassis_Rx_Data_D.Sentry_Position_X;
+      Data_MCU_To_NUC.Robot_Position_Y = 0x03 << 14 | CAN3_Chassis_Rx_Data_D.Sentry_Position_Y;
       break;
     }
   }

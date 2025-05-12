@@ -165,6 +165,26 @@
           <WinNumber>1</WinNumber>
           <ItemText>CAN3_Chassis_Rx_Data_B,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>CAN3_Chassis_Rx_Data_C</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>CAN3_Chassis_Rx_Data_E,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>avg_speed_a</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>avg_speed_b</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -176,6 +196,11 @@
           <count>1</count>
           <WinNumber>2</WinNumber>
           <ItemText>CAN3_Chassis_Rx_Data_C,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>avg_speed_b</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>
@@ -424,7 +449,7 @@
       <GroupNumber>5</GroupNumber>
       <FileNumber>13</FileNumber>
       <FileType>8</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\Device\Src\dvc_lkmotor.cpp</PathWithFileName>

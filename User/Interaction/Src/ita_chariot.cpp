@@ -37,6 +37,9 @@ void Class_Chariot::Init(float __DR16_Dead_Zone)
         //底盘
         Chassis.Referee = &Referee;
         Chassis.Init();
+        
+        //超电
+        Chassis.Supercap.Referee = &Referee;
 
     #elif defined(GIMBAL)
         
@@ -90,7 +93,7 @@ void Class_Chariot::CAN_Chassis_Tx_Gimbal_Callback()
     uint8_t Flag[6] = {0};
     float Pre_Count[6] = {0};
     uint16_t Position[8] = {0};
-    float Bullet_Speed_A = 0.f, Bullet_Speed_B = 0.f;
+    int16_t Bullet_Speed_A = 0.f, Bullet_Speed_B = 0.f;
     int16_t Self_Position_X,Self_Position_Y;
     int16_t Target_Position_X,Target_Position_Y;
     //数据更新
@@ -155,7 +158,7 @@ void Class_Chariot::CAN_Chassis_Tx_Gimbal_Callback()
     Target_Position_X = (int16_t)(Referee.Get_Radar_Send_Coordinate_X() * 100.f);
     Target_Position_Y = (int16_t)(Referee.Get_Radar_Send_Coordinate_Y() * 100.f);
     radar_info = Referee.Get_Radar_Info();
-    dart_target = Referee.Get_Dart_Command_Target();
+    dart_target = Referee.Get_Dart_Command_Target() | (0x01 & Referee.Get_Sentry_Info_1() >> 19) << 2;
 
     for(int i = 0;i < 6;i++)//无敌状态辨认
     {
@@ -277,7 +280,7 @@ void Class_Chariot::CAN_Chassis_Rx_Gimbal_Callback(uint8_t *Rx_Data)
             Chassis.Set_Target_Velocity_X(chassis_velocity_x);
             Chassis.Set_Target_Velocity_Y(chassis_velocity_y);
             #ifdef OMNI_WHEEL
-                Chassis.Set_Target_Velocity_Y(-chassis_velocity_y);
+                Chassis.Set_Target_Velocity_X(-chassis_velocity_x);
             #endif
             Chassis.Set_Target_Omega(chassis_omega);//线速度
             Chassis.Set_Supercap_Mode(supercap_mode);
@@ -306,6 +309,7 @@ Referee_Rx_D_t CAN3_Chassis_Rx_Data_D;
 Referee_Rx_E_t CAN3_Chassis_Rx_Data_E;
 Referee_Rx_F_t CAN3_Chassis_Rx_Data_F;
 Referee_Rx_G_t CAN3_Chassis_Rx_Data_G;
+float speed_a,speed_b;
 #ifdef GIMBAL
 void Class_Chariot::CAN_Gimbal_Rx_Chassis_Callback()
 {
@@ -336,6 +340,8 @@ void Class_Chariot::CAN_Gimbal_Rx_Chassis_Callback()
         }
         case (0x197):{
             memcpy(&CAN3_Chassis_Rx_Data_E, CAN_Manage_Object->Rx_Buffer.Data, sizeof(Referee_Rx_E_t));
+            speed_a = (float)CAN3_Chassis_Rx_Data_E.Bullet_Speed_A / 100.f;
+            speed_b = (float)CAN3_Chassis_Rx_Data_E.Bullet_Speed_B / 100.f;
             break;
         }
         case (0x196):{
@@ -399,7 +405,7 @@ void Class_Chariot::CAN_Gimbal_Tx_Chassis_Callback()
  * @brief 底盘控制逻辑
  *
  */  		
-float Offset_K = 0.1f;
+float Offset_K = 0.175f;
 #ifdef GIMBAL
 void Class_Chariot::Control_Chassis()
 {
@@ -641,68 +647,47 @@ void Class_Chariot::Control_Booster()
             Booster_A.Set_Friction_Control_Type(Friction_Control_Type_DISABLE);
             Booster_B.Set_Booster_Control_Type(Booster_Control_Type_DISABLE);
             Booster_B.Set_Friction_Control_Type(Friction_Control_Type_DISABLE);
-            // if(DR16.Get_Right_Switch() == DR16_Switch_Status_UP) // 右上 发射机构开火
-            // {
-            //     Booster_A.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
-            //     Booster_B.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
-            //     if (DR16.Get_Yaw() >= -0.2 && DR16.Get_Yaw() <= 0.2)
-            //     {
-            //         booster_sign = 0;
-            //     }
-            //     else if (DR16.Get_Yaw() >= 0.8 && booster_sign == 0) // 单发
-            //     {
-            //         Booster_A.Set_Booster_Control_Type(Booster_Control_Type_SINGLE);
-            //         Booster_B.Set_Booster_Control_Type(Booster_Control_Type_SINGLE);
-            //         booster_sign = 1;
-            //     }
-            //     else if (DR16.Get_Yaw() <= -0.8 && booster_sign == 0) // 五连发
-            //     {
-            //         Booster_A.Set_Booster_Control_Type(Booster_Control_Type_MULTI);
-            //         Booster_B.Set_Booster_Control_Type(Booster_Control_Type_MULTI);
-            //         booster_sign = 1;
-            //     }
-            // }
             if (DR16.Get_Right_Switch() == DR16_Switch_Status_UP)
             {
                 Booster_A.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
-                Booster_A.Set_Friction_Control_Type(Friction_Control_Type_ENABLE);
-                Booster_A.Set_Booster_Control_Type(Booster_Control_Type_REPEATED);
-                // if (DR16.Get_Yaw() >= -0.2 && DR16.Get_Yaw() <= 0.2)
-                // {
-                //     //Booster_A.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
-                //     booster_sign_a = 0;
-                // }
-                // else if (DR16.Get_Yaw() >= 0.8 && booster_sign_a == 0) // 单发
-                // {
-                //     Booster_A.Set_Booster_Control_Type(Booster_Control_Type_SINGLE);
-                //     booster_sign_a = 1;
-                // }
-                // else if (DR16.Get_Yaw() <= -0.8 && booster_sign_a == 0) // 五连发
-                // {
-                //     Booster_A.Set_Booster_Control_Type(Booster_Control_Type_MULTI);
-                //     booster_sign_a = 1;
-                // }
+                //Booster_A.Set_Friction_Control_Type(Friction_Control_Type_ENABLE);
+                //Booster_A.Set_Booster_Control_Type(Booster_Control_Type_REPEATED);
+                if (DR16.Get_Yaw() >= -0.2 && DR16.Get_Yaw() <= 0.2)
+                {
+                    //Booster_A.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
+                    booster_sign_a = 0;
+                }
+                else if (DR16.Get_Yaw() >= 0.8 && booster_sign_a == 0) // 单发
+                {
+                    Booster_A.Set_Booster_Control_Type(Booster_Control_Type_SINGLE);
+                    booster_sign_a = 1;
+                }
+                else if (DR16.Get_Yaw() <= -0.8 && booster_sign_a == 0) // 五连发
+                {
+                    Booster_A.Set_Booster_Control_Type(Booster_Control_Type_MULTI);
+                    booster_sign_a = 1;
+                }
             }
             else if(DR16.Get_Right_Switch() == DR16_Switch_Status_DOWN)
             {
                 Booster_B.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
-                Booster_B.Set_Friction_Control_Type(Friction_Control_Type_ENABLE);
-                Booster_B.Set_Booster_Control_Type(Booster_Control_Type_REPEATED);
-                // if (DR16.Get_Yaw() >= -0.2 && DR16.Get_Yaw() <= 0.2)
-                // {
-                //     //Booster_B.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
-                //     booster_sign_b = 0;
-                // }
-                // else if (DR16.Get_Yaw() >= 0.8 && booster_sign_b == 0) // 单发
-                // {
-                //     Booster_B.Set_Booster_Control_Type(Booster_Control_Type_SINGLE);
-                //     booster_sign_b = 1;
-                // }
-                // else if (DR16.Get_Yaw() <= -0.8 && booster_sign_b == 0) // 五连发
-                // {
-                //     Booster_B.Set_Booster_Control_Type(Booster_Control_Type_MULTI);
-                //     booster_sign_b = 1;
-                // }
+                //Booster_B.Set_Friction_Control_Type(Friction_Control_Type_ENABLE);
+                //Booster_B.Set_Booster_Control_Type(Booster_Control_Type_REPEATED);
+                if (DR16.Get_Yaw() >= -0.2 && DR16.Get_Yaw() <= 0.2)
+                {
+                    //Booster_B.Set_Booster_Control_Type(Booster_Control_Type_CEASEFIRE);
+                    booster_sign_b = 0;
+                }
+                else if (DR16.Get_Yaw() >= 0.8 && booster_sign_b == 0) // 单发
+                {
+                    Booster_B.Set_Booster_Control_Type(Booster_Control_Type_SINGLE);
+                    booster_sign_b = 1;
+                }
+                else if (DR16.Get_Yaw() <= -0.8 && booster_sign_b == 0) // 五连发
+                {
+                    Booster_B.Set_Booster_Control_Type(Booster_Control_Type_MULTI);
+                    booster_sign_b = 1;
+                }
             }
             break;
         }

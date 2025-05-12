@@ -59,7 +59,7 @@ void Class_Gimbal::Init()
     Motor_Pitch_B.PID_Torque.Init(0.f, 0.0f, 0.0f, 0.0f, Motor_Pitch_B.Get_Output_Max(), Motor_Pitch_B.Get_Output_Max());
     Motor_Pitch_B.Init(&hfdcan1, DJI_Motor_ID_0x206, DJI_Motor_Control_Method_ANGLE, 3413);
 
-    Motor_Main_Yaw.Set_Zero_Position(212.308533f);
+    Motor_Main_Yaw.Set_Zero_Position(30.35019f);
     Motor_Yaw_A.Set_Zero_Position(294.9169f);
     Motor_Yaw_B.Set_Zero_Position(88.9013f);
     Motor_Pitch_A.Set_Zero_Position(166.157227f);
@@ -448,6 +448,9 @@ void Class_Gimbal::Output()
             Motor_Pitch_B.Set_Target_Angle(last_pitch_b);
             Motor_Yaw_A.Set_Target_Angle(last_yaw_a);
             Motor_Yaw_B.Set_Target_Angle(last_yaw_b);
+
+            A_Cruise_Flag = 0;
+            B_Cruise_Flag = 0;
         }
     }
 }
@@ -716,14 +719,14 @@ volatile int Main_Yaw_Flag = 0;
 
 void Class_Gimbal::Limit_Update()
 {
-    if(Get_True_Angle_Yaw_A() > -90.f && Get_True_Angle_Yaw_A() < -25.5f)
+    if(Get_True_Angle_Yaw_A() > -125.f && Get_True_Angle_Yaw_A() < -25.5f)
     {
         Motor_Yaw_A.Set_DJI_Motor_Control_Method(DJI_Motor_Control_Method_OMEGA);
         Motor_Yaw_A.Set_Target_Omega_Angle(120.f);
         A_limit_flag = 1;
         temp_pre_omega_a = Motor_Yaw_A.Get_Target_Omega_Angle();
     }
-    else if(Get_True_Angle_Yaw_A() > -155.5f && Get_True_Angle_Yaw_A() < -90.f)
+    else if(Get_True_Angle_Yaw_A() > -160.f && Get_True_Angle_Yaw_A() < -130.f)
     {
         Motor_Yaw_A.Set_DJI_Motor_Control_Method(DJI_Motor_Control_Method_OMEGA);
         Motor_Yaw_A.Set_Target_Omega_Angle(-120.f);
@@ -745,14 +748,14 @@ void Class_Gimbal::Limit_Update()
         }
     }
 
-    if(Get_True_Angle_Yaw_B() < 90.f && Get_True_Angle_Yaw_B() > 25.5f)
+    if(Get_True_Angle_Yaw_B() < 125.f && Get_True_Angle_Yaw_B() > 25.5f)
     {
         Motor_Yaw_B.Set_DJI_Motor_Control_Method(DJI_Motor_Control_Method_OMEGA);
         Motor_Yaw_B.Set_Target_Omega_Angle(-120.f);
         B_limit_flag = 1;
         temp_pre_omega_b = Motor_Yaw_B.Get_Target_Omega_Angle();
     }
-    else if(Get_True_Angle_Yaw_B() < 155.5f && Get_True_Angle_Yaw_B() > 90.f)
+    else if(Get_True_Angle_Yaw_B() < 160.f && Get_True_Angle_Yaw_B() > 130.f)
     {
         Motor_Yaw_B.Set_DJI_Motor_Control_Method(DJI_Motor_Control_Method_OMEGA);
         Motor_Yaw_B.Set_Target_Omega_Angle(120.f);

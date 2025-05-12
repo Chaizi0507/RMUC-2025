@@ -38,11 +38,11 @@ float Class_Power_Limit::Calculate_Limit_K(float omega[], float torque[], float 
 {
     float limit_k = 1.; // 输出伸缩因子k
 
-    float tmp_predict;
+    float tmp_predict=0;
 
-    float torque_square_sum;
-    float omega_square_sum;
-    float torque_multi_omega_sum;
+    float torque_square_sum=0;
+    float omega_square_sum=0;
+    float torque_multi_omega_sum=0;
 
     float func_a, func_b, func_c;
     float delta;
@@ -110,8 +110,9 @@ void Class_Power_Limit::TIM_Adjust_PeriodElapsedCallback(Class_DJI_Motor_C620 (&
 		//收集电机参数
 		Set_Motor(Motor);
         //跑功率限制
-		float power_limit_sum = fabs(Total_Power_Limit + Buffer_power);
-        Limit_K = Calculate_Limit_K(Omega,Input_Torque,power_limit_sum,4);
+		// float power_limit_sum = fabs(Total_Power_Limit + Buffer_power);
+		Total_Power_Limit = fabs(Total_Power_Limit + Buffer_power);
+        Limit_K = Calculate_Limit_K(Omega,Input_Torque,Total_Power_Limit,4);
         //设置输出
 		Output(Motor);
 	#elif defined (POWER_LIMIT_OLD_CONTROL)
